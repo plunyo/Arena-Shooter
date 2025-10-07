@@ -10,11 +10,17 @@ config_version=5
 
 [application]
 
-config/name="Arena Shooter"
-run/main_scene="uid://dhg05mub2lnxf"
+config/name="Arena Shooter Server"
+run/main_scene="uid://dyf6yqb628de4"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
-[autoload]
+[display]
 
-ServerConnection="*res://networking/server_connection.tscn"
+display_server/driver="headless"
+display_server/driver.windows="headless"
+display_server/driver.linuxbsd="headless"
+display_server/driver.android="headless"
+display_server/driver.ios="headless"
+display_server/driver.visionos="headless"
+display_server/driver.macos="headless"

@@ -1,0 +1,9 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1759816471
+icon.svg::CompressedTexture2D::7303092291826043751::1759593850::1759816473::1::::<><><>0<>0<>09b5c5270991ba1e0e53fc1ae81dd755<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+main.gd::GDScript::5773936232851549700::1759813609::0::1::::<>Node<><>0<>0<><>::
+main.tscn::PackedScene::8856042116356143753::1759813609::0::1::::<><><>0<>0<><>::uid://coi65eoed241u::::res://main.gd<>uid://xosocd1uud04::::res://networking/client_handler.gd
+::res://networking/::1759813609
+client.gd::GDScript::8147838707725780403::1759813609::0::1::::Client<>Node<><>0<>0<><>::
+client_handler.gd::GDScript::1644362710105998299::1759813609::0::1::::ClientHandler<>Node<><>0<>0<><>::
+packet.gd::GDScript::4467390096652863402::1759813609::0::1::::<>Node<><>0<>0<><>::
