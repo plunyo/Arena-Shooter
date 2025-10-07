@@ -43,12 +43,12 @@ func spawn_error(message: String) -> void:
 	error_message_container.add_child(error_message_instance)
 
 func _on_recieved_packet(packet_id: int, _data: PackedByteArray) -> void:
-	if packet_id != PacketUtils.Incoming.SESSION_ID: return
+	if packet_id != PacketUtils.Server.JOIN_ACCEPT: return
 	get_tree().change_scene_to_file("res://arena/arena.tscn")
 
 func _on_server_connection_connected() -> void:
 	status_label.text = CONNECTED_TO_SERVER_MESSAGE
 	ServerConnection.send_packet(
 		ServerConnection.TCP,
-		PacketUtils.Outgoing.REQUEST_SESSION_ID
+		PacketUtils.Client.REQUEST_SESSION_ID
 	)
