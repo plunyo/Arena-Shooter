@@ -25,13 +25,3 @@ func _on_button_pressed() -> void:
 		port = 30067
 
 	ServerConnection.connect_to_server(ip, port)
-
-func _on_recieved_packet(packet_id: int, _data: PackedByteArray) -> void:
-	if packet_id != Packet.Server.JOIN_ACCEPT: return
-	get_tree().change_scene_to_file("res://arena/arena.tscn")
-
-func _on_server_connection_connected() -> void:
-	ServerConnection.send_packet(
-		ServerConnection.TCP,
-		Packet.Client.REQUEST_SESSION_ID
-	)
