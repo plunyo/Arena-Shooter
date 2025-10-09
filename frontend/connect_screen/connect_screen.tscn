@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_40v8f")
 ip_line_edit = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/IPLineEdit")
-port_line_edit = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PortLineEdit")
+port_line_edit = NodePath("")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -54,11 +54,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = ":"
 
-[node name="PortLineEdit" type="LineEdit" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SpinBox" type="SpinBox" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
-placeholder_text = "30067"
-expand_to_text_length = true
+max_value = 65535.0
+rounded = true
 
 [node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2

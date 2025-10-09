@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Arena Shooter"
+config/name="Social"
 run/main_scene="uid://dhg05mub2lnxf"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
@@ -18,3 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 ServerConnection="*res://networking/server_connection.tscn"
+
+[display]
+
+window/stretch/mode="canvas_items"
