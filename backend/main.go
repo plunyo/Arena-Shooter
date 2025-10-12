@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"social_server/networking"
 
 	"github.com/codecat/go-enet"
 )
@@ -17,10 +18,9 @@ func main() {
 	defer enet.Deinitialize()
 
 	host, err := enet.NewHost(enet.NewListenAddress(LISTEN_PORT), MAX_PEERS, 1, 0, 0)
-	if err != nil {
-		log.Fatalf("Couldn't create host: %s", err)
-	}
+	if err != nil { log.Fatalf("Couldn't create host: %s", err) }
 	defer host.Destroy()
+
 	log.Println("Server running on port:", LISTEN_PORT)
 
 	for {
@@ -30,14 +30,15 @@ func main() {
 		case enet.EventNone: continue
 
 		case enet.EventConnect:
-			log.Printf("New peer connected: %s", event.GetPeer().GetAddress())
+			peer := event.GetPeer()
+			log.Printf("New peer with id %d connected: %s", peer.GetConnectId(), peer.GetAddress())
 
 		case enet.EventDisconnect:
 			log.Printf("Peer disconnected: %s", event.GetPeer().GetAddress())
 
 		case enet.EventReceive:
 			packet := event.GetPacket()
-			log.Printf("Received %d bytes from %s", len(packet.GetData()), event.GetPeer().GetAddress())
+			networking.ParsePlayerPacket(event.GetPeer(), packet.GetData())
 			packet.Destroy()
 		}
 	}

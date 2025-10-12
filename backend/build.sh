@@ -2,8 +2,6 @@
 set -euo pipefail
 
 # Usage: ./build.sh windows|linux amd64|arm64|arm [optimize] [run]
-# optimize: "true" to enable -s -w, CGO_DISABLED and UPX packing. Anything else = no optimize.
-# run: "true" to run the built binary immediately after building (only works on host OS)
 
 if [ "${1:-}" = "" ] || [ "${2:-}" = "" ]; then
     echo "Usage: $0 windows|linux amd64|arm64|arm [optimize] [run]"
@@ -44,8 +42,16 @@ export GOOS
 export GOARCH
 export GOARM
 
+# detect if we have cgo-dependent packages (like go-enet)
+CGO_ENABLED=0
+if grep -qr "github.com/codecat/go-enet" .; then
+    echo "Detected go-enet, enabling CGO..."
+    CGO_ENABLED=1
+fi
+export CGO_ENABLED
+
+# set ldflags for optimization
 if [ "$OPTIMIZE_ARG" = "true" ]; then
-    export CGO_ENABLED=0
     LDFLAGS='-s -w'
     TRIMPATH='-trimpath'
 else
@@ -53,20 +59,20 @@ else
     TRIMPATH=''
 fi
 
+# build
 if [ -n "$LDFLAGS" ]; then
-    go build -ldflags="$LDFLAGS" $TRIMPATH -o "$OUTPUT" ./src
+    go build -ldflags="$LDFLAGS" $TRIMPATH -o "$OUTPUT" .
 else
-    go build -o "$OUTPUT" ./src
+    go build -o "$OUTPUT" .
 fi
 
 echo "go build finished: $(stat -c%s "$OUTPUT" 2>/dev/null || stat -f%z "$OUTPUT") bytes"
 
+# optional UPX compression
 if [ "$OPTIMIZE_ARG" = "true" ]; then
     if command -v upx >/dev/null 2>&1; then
-        echo "Compressing with upx (this may slow startup slightly)..."
-        upx --best --ultra-brute "$OUTPUT" || {
-            echo "UPX failed; leaving uncompressed binary."
-        }
+        echo "Compressing with upx..."
+        upx --best --ultra-brute "$OUTPUT" || echo "UPX failed; leaving binary uncompressed."
         echo "After UPX: $(stat -c%s "$OUTPUT" 2>/dev/null || stat -f%z "$OUTPUT") bytes"
     else
         echo "UPX not found. Install upx to pack the binary: https://upx.github.io/"

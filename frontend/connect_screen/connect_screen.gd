@@ -5,6 +5,7 @@ const ERROR_MESSAGE_SCENE: PackedScene = preload("uid://k12a7effdqt1")
 @export var ip_line_edit: LineEdit
 @export var port_line_edit: LineEdit
 
+@onready var username_line_edit: LineEdit = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/UsernameLineEdit
 @onready var error_message_container: VBoxContainer = $ErrorMessageContainer
 @onready var status_label: Label = $StatusLabel
 
@@ -24,4 +25,4 @@ func _on_button_pressed() -> void:
 	else:
 		port = 30067
 
-	ServerConnection.connect_to_server(ip, port)
+	ServerConnection.connect_to_server(ip, port, username_line_edit.text)
