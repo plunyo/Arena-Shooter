@@ -1,11 +1,14 @@
 package networking
 
+import "github.com/codecat/go-enet"
+
 type PacketID = uint8
 
 type ClientPacket = PacketID
 const (
 	ClientJoin ClientPacket = iota
 	ClientMove
+	ClientRequestSync
 	ClientChat
 )
 
@@ -14,6 +17,7 @@ const (
 	ServerJoinAccept ServerPacket = iota
 	ServerJoinDeny
 	ServerUpdatePlayers
+	ServerPlayerSync
 	ServerUpdateChat
 )
 
@@ -33,5 +37,9 @@ func (p Packet) ToRaw() []byte {
 
 func CreatePacket(packetId uint8, data []byte) Packet {
 	return Packet{ Id: packetId, Data: data }
+}
+
+func SendPacket(peer enet.Peer, packet Packet, flags enet.PacketFlags) {
+	peer.SendBytes(packet.ToRaw(), 0, flags)
 }
 

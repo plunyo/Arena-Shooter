@@ -34,6 +34,7 @@ func main() {
 			log.Printf("New peer with id %d connected: %s", peer.GetConnectId(), peer.GetAddress())
 
 		case enet.EventDisconnect:
+			networking.RemovePlayer(event.GetPeer())
 			log.Printf("Peer disconnected: %s", event.GetPeer().GetAddress())
 
 		case enet.EventReceive:
