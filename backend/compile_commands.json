@@ -9,12 +9,12 @@
       "-DDEBUG=1",
       "-c",
       "-o",
-      "build/main.o",
-      "src/main.c"
+      "build/networking/game_packet.o",
+      "src/networking/game_packet.c"
     ],
     "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/main.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/main.o"
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/game_packet.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/game_packet.o"
   },
   {
     "arguments": [
@@ -26,11 +26,28 @@
       "-DDEBUG=1",
       "-c",
       "-o",
-      "build/networking/packet.o",
-      "src/networking/packet.c"
+      "build/networking/packet_handler.o",
+      "src/networking/packet_handler.c"
     ],
     "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/packet.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/packet.o"
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/packet_handler.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/packet_handler.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/server.o",
+      "src/server.c"
+    ],
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/server.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/server.o"
   }
 ]

@@ -30,7 +30,7 @@ func connect_to_server(address: String, port: int, _username: String) -> void:
 	poll_timer.start()
 
 func disconnect_from_server() -> void:
-	if peer and not peer.is_active(): return
+	if peer != null and not peer.is_active(): return
 	peer.peer_disconnect()
 	host.destroy()
 	print("disconnected from server!")
@@ -45,6 +45,7 @@ func parse_packet(packet: PackedByteArray) -> void:
 		Packet.Server.JOIN_ACCEPT:
 			print("join accepted!")
 			join_accepted.emit()
+			get_tree().change_scene_to_file("res://arena/arena.tscn")
 
 func _on_poll_timer_timeout() -> void:
 	var event: Array = host.service()
@@ -64,3 +65,6 @@ func _on_poll_timer_timeout() -> void:
 		ENetConnection.EVENT_RECEIVE:
 			var packet: PackedByteArray = event_peer.get_packet()
 			parse_packet(packet)
+
+func _on_tree_exiting() -> void:
+	disconnect_from_server()
