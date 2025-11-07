@@ -43,6 +43,23 @@
       "-DDEBUG=1",
       "-c",
       "-o",
+      "build/networking/player_handler.o",
+      "src/networking/player_handler.c"
+    ],
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/player_handler.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/player_handler.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
       "build/server.o",
       "src/server.c"
     ],

@@ -1,6 +1,7 @@
 extends Node
 
 signal join_accepted
+signal connected_to_server
 
 @onready var poll_timer: Timer = $PollTimer
 
@@ -54,8 +55,8 @@ func _on_poll_timer_timeout() -> void:
 
 	match event_type:
 		ENetConnection.EVENT_CONNECT:
+			connected_to_server.emit()
 			print("connected to server!")
-			send_packet(Packet.new(Packet.Client.JOIN), ENetPacketPeer.FLAG_RELIABLE)
 			connected = true
 
 		ENetConnection.EVENT_DISCONNECT:

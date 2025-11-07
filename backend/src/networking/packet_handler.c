@@ -1,5 +1,5 @@
-
 #include "networking/packet_handler.h"
+#include "networking/player_handler.h"
 #include "networking/game_packet.h"
 #include <enet/enet.h>
 #include <stdlib.h>
@@ -50,13 +50,27 @@ void HandlePacket(ENetPeer* peer, const uint8_t* data, size_t dataLength) {
             if (response) {
                 SendPacket(peer, response, ENET_PACKET_FLAG_RELIABLE);
                 GamePacket_Destroy(response);
+
+                Player* newPlayer = malloc(sizeof(Player));
+                if (newPlayer == NULL) {
+                    fprintf(stderr, "couldnt malloc new player ;(\n");
+                    return;
+                }
+
+                newPlayer->peer = peer;
+                newPlayer->id = peer->incomingPeerID;
+                newPlayer->username = (char*)payload; // only the username is sent with payload in utf-8
+                newPlayer->positionX = 0.0;
+                newPlayer->positionY = 0.0;
+
+                AddPlayer(newPlayer);
             } else {
                 fprintf(stderr, "failed to allocate response packet\n");
             }
             break;
         }
         case CLIENT_MOVE: {
-
+            
             break;
         }
         default:

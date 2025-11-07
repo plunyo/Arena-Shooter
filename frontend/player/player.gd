@@ -2,6 +2,11 @@ extends CharacterBody2D
 
 const SPEED: float = 400.0
 
+@onready var username_label: Label = $UsernameLabel
+
+func _ready() -> void:
+	username_label.text = ServerConnection.username
+
 func _physics_process(_delta: float) -> void:
 	var input_direction: Vector2 = Input.get_vector(&"left", &"right", &"up", &"down")
 	var direction: Vector2 = input_direction.normalized()
