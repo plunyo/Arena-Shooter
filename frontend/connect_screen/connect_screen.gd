@@ -28,7 +28,7 @@ func _on_button_pressed() -> void:
 	else:
 		port = 30067
 
-	ServerConnection.connect_to_server(ip, port, username_line_edit.text)
+	ServerConnection.connect_to_server(ip, port, username_line_edit.text if not username_line_edit.text.is_empty() else username_line_edit.placeholder_text)
 
 func _on_connected_to_server() -> void:
 	ServerConnection.send_packet(Packet.new(Packet.Client.JOIN), ENetPacketPeer.FLAG_RELIABLE)
