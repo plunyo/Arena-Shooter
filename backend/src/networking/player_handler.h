@@ -15,3 +15,4 @@ typedef struct Player {
 extern Player* headPlayer;
 
 void AddPlayer(Player* newPlayer);
+Player* FindPlayerFromId(int id);

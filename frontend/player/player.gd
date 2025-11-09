@@ -14,13 +14,15 @@ func _physics_process(_delta: float) -> void:
 	velocity = direction * SPEED
 	move_and_slide()
 
-func send_player_update() -> void:
-	var payload: StreamPeerBuffer = StreamPeerBuffer.new()
+func send_move_update() -> void:
+	var payload: StreamPeerBuffer = StreamPeerBuffer.new() 
+	payload.big_endian = true
+
 	payload.put_float(global_position.x)
 	payload.put_float(global_position.y)
 
-	var packet: Packet = Packet.new(Packet.Server.UPDATE_PLAYERS, payload.data_array)
+	var packet: Packet = Packet.new(Packet.Client.MOVE, payload.data_array)
 	ServerConnection.send_packet(packet, ENetPacketPeer.FLAG_UNRELIABLE_FRAGMENT)
 
 func _on_update_timer_timeout() -> void:
-	send_player_update()
+	send_move_update()

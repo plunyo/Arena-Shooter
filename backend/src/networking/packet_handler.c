@@ -1,6 +1,7 @@
 #include "networking/packet_handler.h"
 #include "networking/player_handler.h"
 #include "networking/game_packet.h"
+#include "utils/payload_reader.h"
 #include <enet/enet.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,13 +12,13 @@ void SendPacket(ENetPeer* peer, const GamePacket* packet, enet_uint32 flags) {
     size_t rawLen = 0;
     uint8_t* raw = GamePacket_ToRaw(packet, &rawLen);
     if (!raw) {
-        fprintf(stderr, "SendPacket: failed to serialize packet\n");
+        fprintf(stderr, "failed to serialize packet\n");
         return;
     }
 
     ENetPacket* enetPacket = enet_packet_create(raw, rawLen, flags);
     if (!enetPacket) {
-        fprintf(stderr, "SendPacket: enet_packet_create failed\n");
+        fprintf(stderr, "enet_packet_create failed\n");
         free(raw);
         return;
     }
@@ -29,17 +30,19 @@ void SendPacket(ENetPeer* peer, const GamePacket* packet, enet_uint32 flags) {
 
 void HandlePacket(ENetPeer* peer, const uint8_t* data, size_t dataLength) {
     if (!data || dataLength < 1) {
-        fprintf(stderr, "HandlePacket: invalid packet\n");
+        fprintf(stderr, "invalid packet\n");
         return;
     }
 
     PacketType type = data[0];
     const uint8_t* payload = &data[1];
     size_t payloadLen = dataLength - 1;
+    
+    PayloadReader payloadReader = PayloadReader_New(payload, payloadLen);
 
     GamePacket* packet = GamePacket_New(type, payload, payloadLen);
     if (!packet) {
-        fprintf(stderr, "HandlePacket: failed to allocate GamePacket\n");
+        fprintf(stderr, "failed to allocate GamePacket\n");
         return;
     }
 
@@ -70,7 +73,10 @@ void HandlePacket(ENetPeer* peer, const uint8_t* data, size_t dataLength) {
             break;
         }
         case CLIENT_MOVE: {
-            
+            Player* player = FindPlayerFromId(peer->incomingPeerID);
+            player->positionX = PayloadReader_ReadF32(&payloadReader);
+            player->positionY = PayloadReader_ReadF32(&payloadReader);
+            printf("x: %f | y: %f\n", player->positionX, player->positionY);
             break;
         }
         default:

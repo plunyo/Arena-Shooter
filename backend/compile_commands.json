@@ -66,5 +66,22 @@
     "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
     "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/server.c",
     "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/server.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/utils/payload_reader.o",
+      "src/utils/payload_reader.c"
+    ],
+    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
+    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/utils/payload_reader.c",
+    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/utils/payload_reader.o"
   }
 ]
