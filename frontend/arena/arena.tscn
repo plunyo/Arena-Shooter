@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cmp2mmg27h70w"]
+[gd_scene load_steps=3 format=3 uid="uid://cmp2mmg27h70w"]
 
 [ext_resource type="PackedScene" uid="uid://dotc1x0hy4uk" path="res://player/player.tscn" id="1_dkqtx"]
+[ext_resource type="Script" uid="uid://c12wo263k6ysd" path="res://networking/replicator.gd" id="2_u13ga"]
 
 [node name="Arena" type="Node2D"]
 
@@ -9,3 +10,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Player" parent="." instance=ExtResource("1_dkqtx")]
+
+[node name="Replicator" type="Node" parent="."]
+script = ExtResource("2_u13ga")

@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 Player* headPlayer = NULL;
+int playerCount = 0;
 
 void AddPlayer(Player* newPlayer) {
     if (!headPlayer) {
@@ -9,17 +10,20 @@ void AddPlayer(Player* newPlayer) {
         newPlayer->next = NULL;
     } else {
         Player* lastPlayer = headPlayer;
+
         while (lastPlayer->next != NULL) {
             lastPlayer = lastPlayer->next;
         }
+
         lastPlayer->next = newPlayer;
         newPlayer->next = NULL;
     }
     
+    playerCount++;
     printf("new player with username: %s, id: %d, joined!\n", newPlayer->username, newPlayer->id);
 }
 
-Player* FindPlayerFromId(int id) {
+Player* FindPlayer(int id) {
     if (!headPlayer) {
         fprintf(stderr, "no players!\n");
         return NULL;

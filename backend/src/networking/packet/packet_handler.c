@@ -1,10 +1,13 @@
-#include "networking/packet_handler.h"
+#include "networking/packet/packet_handler.h"
 #include "networking/player_handler.h"
-#include "networking/game_packet.h"
+#include "networking/packet/game_packet.h"
 #include "utils/payload_reader.h"
 #include <enet/enet.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+#include <string.h>
 
 void SendPacket(ENetPeer* peer, const GamePacket* packet, enet_uint32 flags) {
     if (!peer || !packet) return;
@@ -48,7 +51,11 @@ void HandlePacket(ENetPeer* peer, const uint8_t* data, size_t dataLength) {
 
     switch (packet->type) {
         case CLIENT_JOIN: {
-            GamePacket* response = GamePacket_New(SERVER_JOIN_ACCEPT, NULL, 0); // no payload
+            GamePacket* response = GamePacket_New(
+                SERVER_JOIN_ACCEPT, 
+                (uint8_t[]){ peer->incomingPeerID }, 
+                0
+            );
             
             if (response) {
                 SendPacket(peer, response, ENET_PACKET_FLAG_RELIABLE);
@@ -62,7 +69,7 @@ void HandlePacket(ENetPeer* peer, const uint8_t* data, size_t dataLength) {
 
                 newPlayer->peer = peer;
                 newPlayer->id = peer->incomingPeerID;
-                newPlayer->username = (char*)payload; // only the username is sent with payload in utf-8
+                newPlayer->username = strndup((char*)payload, fmin(payloadLen, 255)); // only the username is sent with payload in utf-8
                 newPlayer->positionX = 0.0;
                 newPlayer->positionY = 0.0;
 
@@ -73,12 +80,12 @@ void HandlePacket(ENetPeer* peer, const uint8_t* data, size_t dataLength) {
             break;
         }
         case CLIENT_MOVE: {
-            Player* player = FindPlayerFromId(peer->incomingPeerID);
+            Player* player = FindPlayer(peer->incomingPeerID);
             player->positionX = PayloadReader_ReadF32(&payloadReader);
             player->positionY = PayloadReader_ReadF32(&payloadReader);
             break;
         }
-        case CLIENT_REQUEST_PLAYER_SYNC: {
+        case CLIENT_REQUEST_REPLICATE: {
             
         }
         default: {

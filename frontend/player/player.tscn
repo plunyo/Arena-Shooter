@@ -47,7 +47,6 @@ wait_time = 0.05
 autostart = true
 
 [node name="UsernameLabel" type="Label" parent="."]
-anchors_preset = -1
 offset_left = -47.0
 offset_top = -81.0
 offset_right = 44.0

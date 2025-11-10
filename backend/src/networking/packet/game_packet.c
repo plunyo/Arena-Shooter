@@ -1,5 +1,5 @@
 
-#include "networking/game_packet.h"
+#include "networking/packet/game_packet.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

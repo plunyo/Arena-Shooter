@@ -13,6 +13,7 @@ typedef struct Player {
 } Player;
 
 extern Player* headPlayer;
+extern int playerCount;
 
 void AddPlayer(Player* newPlayer);
-Player* FindPlayerFromId(int id);
+Player* FindPlayer(int id);

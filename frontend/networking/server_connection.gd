@@ -2,6 +2,7 @@ extends Node
 
 signal join_accepted
 signal connected_to_server
+signal packet_recieved(packet: Packet)
 
 @onready var poll_timer: Timer = $PollTimer
 
@@ -10,6 +11,7 @@ var peer: ENetPacketPeer
 
 var connected: bool = false
 var username: String
+var id: int
 
 func _ready() -> void:
 	var err: Error = host.create_host()
@@ -43,11 +45,15 @@ func send_packet(packet: Packet, flag: int) -> void:
 
 func parse_packet(packet: PackedByteArray) -> void:
 	var packet_id: int = packet.decode_u8(0)
+	var packet_data: PackedByteArray = packet.slice(1)
+
 	match packet_id:
 		Packet.Server.JOIN_ACCEPT:
 			print("join accepted!")
 			join_accepted.emit()
 			get_tree().change_scene_to_file("res://arena/arena.tscn")
+
+	packet_recieved.emit(Packet.new(packet_id, packet_data))
 
 func _on_poll_timer_timeout() -> void:
 	var event: Array = host.service()
@@ -67,6 +73,9 @@ func _on_poll_timer_timeout() -> void:
 		ENetConnection.EVENT_RECEIVE:
 			var packet: PackedByteArray = event_peer.get_packet()
 			parse_packet(packet)
+
+func request_player_sync() -> void:
+	send_packet(Packet.new(Packet.Client.REQUEST_PLAYER_SYNC), ENetPacketPeer.FLAG_RELIABLE)
 
 func _notification(what: int) -> void:
 	if what != NOTIFICATION_WM_CLOSE_REQUEST: return

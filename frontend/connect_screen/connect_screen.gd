@@ -31,5 +31,10 @@ func _on_button_pressed() -> void:
 	ServerConnection.connect_to_server(ip, port, username_line_edit.text if not username_line_edit.text.is_empty() else username_line_edit.placeholder_text)
 
 func _on_connected_to_server() -> void:
-	var username: PackedByteArray = (username_line_edit.text if not username_line_edit.text.is_empty() else username_line_edit.placeholder_text).to_utf8_buffer()
+	var raw_username: String = username_line_edit.text
+
+	if raw_username.is_empty():
+		raw_username = username_line_edit.placeholder_text
+
+	var username: PackedByteArray = raw_username.substr(0, 255).to_utf8_buffer()
 	ServerConnection.send_packet(Packet.new(Packet.Client.JOIN, username), ENetPacketPeer.FLAG_RELIABLE)
