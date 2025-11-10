@@ -12,9 +12,9 @@
       "build/networking/game_packet.o",
       "src/networking/game_packet.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
-    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/networking/game_packet.c",
-    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/networking/game_packet.o"
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/game_packet.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/game_packet.o"
   },
   {
     "arguments": [
@@ -29,9 +29,9 @@
       "build/networking/player_handler.o",
       "src/networking/player_handler.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
-    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/networking/player_handler.c",
-    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/networking/player_handler.o"
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/player_handler.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/player_handler.o"
   },
   {
     "arguments": [
@@ -46,9 +46,9 @@
       "build/networking/packet_handler.o",
       "src/networking/packet_handler.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
-    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/networking/packet_handler.c",
-    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/networking/packet_handler.o"
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/packet_handler.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/packet_handler.o"
   },
   {
     "arguments": [
@@ -63,9 +63,9 @@
       "build/server.o",
       "src/server.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
-    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/server.c",
-    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/server.o"
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/server.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/server.o"
   },
   {
     "arguments": [
@@ -80,8 +80,8 @@
       "build/utils/payload_reader.o",
       "src/utils/payload_reader.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
-    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/utils/payload_reader.c",
-    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/utils/payload_reader.o"
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/utils/payload_reader.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/utils/payload_reader.o"
   }
 ]

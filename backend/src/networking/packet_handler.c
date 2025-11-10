@@ -76,12 +76,15 @@ void HandlePacket(ENetPeer* peer, const uint8_t* data, size_t dataLength) {
             Player* player = FindPlayerFromId(peer->incomingPeerID);
             player->positionX = PayloadReader_ReadF32(&payloadReader);
             player->positionY = PayloadReader_ReadF32(&payloadReader);
-            printf("x: %f | y: %f\n", player->positionX, player->positionY);
             break;
         }
-        default:
+        case CLIENT_REQUEST_PLAYER_SYNC: {
+            
+        }
+        default: {
             fprintf(stderr, "unknown packet with id: %d\n", packet->type);
             break;
+        }
     }
 
     GamePacket_Destroy(packet);
