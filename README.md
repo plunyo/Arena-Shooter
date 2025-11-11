@@ -1,4 +1,4 @@
-# diddy bud calculator
+# diddy blud calculator
 
 halo
 i like nyah! >~<

@@ -1,12 +1,12 @@
 #include "networking/packet/packet_handler.h"
-#include "networking/player_handler.h"
+#include "networking/replication/properties.h"
+#include "networking/replication/replication.h"
 #include "networking/packet/game_packet.h"
 #include "utils/payload_reader.h"
 #include <enet/enet.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
 
 void SendPacket(ENetPeer* peer, const GamePacket* packet, enet_uint32 flags) {
@@ -61,19 +61,9 @@ void HandlePacket(ENetPeer* peer, const uint8_t* data, size_t dataLength) {
                 SendPacket(peer, response, ENET_PACKET_FLAG_RELIABLE);
                 GamePacket_Destroy(response);
 
-                Player* newPlayer = malloc(sizeof(Player));
-                if (newPlayer == NULL) {
-                    fprintf(stderr, "couldnt malloc new player ;(\n");
-                    return;
-                }
-
-                newPlayer->peer = peer;
-                newPlayer->id = peer->incomingPeerID;
-                newPlayer->username = strndup((char*)payload, fmin(payloadLen, 255)); // only the username is sent with payload in utf-8
-                newPlayer->positionX = 0.0;
-                newPlayer->positionY = 0.0;
-
-                AddPlayer(newPlayer);
+                Replicable* newPlayer = CreateReplicable(REPLICABLE_PLAYER);
+                SetReplicableProperty(newPlayer, PROPERTY_ID, &peer->incomingPeerID);
+                SetReplicableProperty(newPlayer, PROPERTY_NAME, strdup((char*)payload));
             } else {
                 fprintf(stderr, "failed to allocate response packet\n");
             }

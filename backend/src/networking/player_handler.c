@@ -14,7 +14,7 @@ void AddPlayer(Player* newPlayer) {
         while (lastPlayer->next != NULL) {
             lastPlayer = lastPlayer->next;
         }
-
+ 
         lastPlayer->next = newPlayer;
         newPlayer->next = NULL;
     }

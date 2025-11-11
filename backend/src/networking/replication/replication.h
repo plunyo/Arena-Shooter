@@ -1,61 +1,21 @@
 #pragma once
-#include <stddef.h>
+#include "networking/replication/properties.h"
 
-#define MAX_COMPONENTS 16
-
-// -------------------- property system --------------------
-typedef enum PropertyType {
-    PROPERTY_INT,
-    PROPERTY_FLOAT,
-    PROPERTY_STRING
-} PropertyType;
-
-typedef struct Property {
-    PropertyType type;
-    union {
-        int i;
-        float f;
-        char* s;
-    } value;
-} Property;
-
-typedef struct PropertyList {
-    Property* properties;
-    int count;
-    int capacity;
-} PropertyList;
-
-// -------------------- component system --------------------
-struct Replicable; // forward declare
-
-typedef struct Component {
-    void (*init)(struct Replicable* owner);
-    void (*update)(struct Replicable* owner, float delta);
-    void (*destroy)(struct Replicable* owner);
-} Component;
-
-// -------------------- replicable object --------------------
 typedef enum ReplicableType {
-    REPLICABLE_PLAYER
+    REPLICABLE_PLAYER,
+    REPLICABLE_ENEMY
 } ReplicableType;
 
 typedef struct Replicable {
     ReplicableType type;
-    PropertyList properties;
-
-    Component* components[MAX_COMPONENTS];
-    int componentCount;
+    int id;
+    PropertyList propertyList;
+    struct Replicable* next;
 } Replicable;
 
-// -------------------- api --------------------
+extern Replicable* headReplicable;
+extern int replicableCount;
+
 Replicable* CreateReplicable(ReplicableType type);
+void SetReplicableProperty(Replicable* obj, PropertyID id, void* value);
 void DestroyReplicable(Replicable* obj);
-
-Property CreateIntProperty(int value);
-Property CreateFloatProperty(float value);
-Property CreateStringProperty(const char* value);
-
-void AddProperty(Replicable* obj, Property prop);
-Property* GetProperty(Replicable* obj, int index);
-
-void AddComponent(Replicable* obj, Component* comp);
