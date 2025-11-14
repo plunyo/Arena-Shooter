@@ -3,11 +3,12 @@
 #include <stdbool.h>
 #include <enet/enet.h>
 
-#include "networking/packet_handler.h"
+#include "networking/replication/replication.h"
+#include "networking/packet/packet_handler.h"
 
 #define EVENT_POLL_TIME 20
 
-static void handle_event(ENetEvent* event) {
+static void handle_event(ENetEvent* event, ReplicationContext* ctx) {
     switch (event->type) {
         case ENET_EVENT_TYPE_NONE:
             break;
@@ -22,7 +23,7 @@ static void handle_event(ENetEvent* event) {
 
         case ENET_EVENT_TYPE_RECEIVE: {
             ENetPacket* packet = event->packet;
-            HandlePacket(event->peer, packet->data, packet->dataLength);
+            HandlePacket(ctx, event->peer, packet->data, packet->dataLength);
             enet_packet_destroy(packet);
             break;
         }
@@ -35,6 +36,8 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
     atexit(enet_deinitialize);
+
+    ReplicationContext* replicationContext = ReplicationContext_New();
 
     ENetAddress address;
     ENetHost* server;
@@ -53,7 +56,7 @@ int main(int argc, char** argv) {
     ENetEvent event;
     while (true) {
         while (enet_host_service(server, &event, EVENT_POLL_TIME) > 0) {
-            handle_event(&event);
+            handle_event(&event, replicationContext);
         }
     }
 

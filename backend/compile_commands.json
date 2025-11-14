@@ -9,12 +9,12 @@
       "-DDEBUG=1",
       "-c",
       "-o",
-      "build/networking/game_packet.o",
-      "src/networking/game_packet.c"
+      "build/networking/packet/game_packet.o",
+      "src/networking/packet/game_packet.c"
     ],
     "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/game_packet.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/game_packet.o"
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/packet/game_packet.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/packet/game_packet.o"
   },
   {
     "arguments": [
@@ -26,12 +26,12 @@
       "-DDEBUG=1",
       "-c",
       "-o",
-      "build/networking/player_handler.o",
-      "src/networking/player_handler.c"
+      "build/networking/packet/packet_handler.o",
+      "src/networking/packet/packet_handler.c"
     ],
     "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/player_handler.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/player_handler.o"
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/packet/packet_handler.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/packet/packet_handler.o"
   },
   {
     "arguments": [
@@ -43,12 +43,29 @@
       "-DDEBUG=1",
       "-c",
       "-o",
-      "build/networking/packet_handler.o",
-      "src/networking/packet_handler.c"
+      "build/networking/replication/replication.o",
+      "src/networking/replication/replication.c"
     ],
     "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/packet_handler.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/packet_handler.o"
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/replication/replication.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/replication/replication.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/networking/replication/properties.o",
+      "src/networking/replication/properties.c"
+    ],
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/replication/properties.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/replication/properties.o"
   },
   {
     "arguments": [
@@ -77,11 +94,45 @@
       "-DDEBUG=1",
       "-c",
       "-o",
-      "build/utils/payload_reader.o",
-      "src/utils/payload_reader.c"
+      "build/utils/vector2.o",
+      "src/utils/vector2.c"
     ],
     "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/utils/payload_reader.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/utils/payload_reader.o"
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/utils/vector2.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/utils/vector2.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/utils/packet_utils.o",
+      "src/utils/packet_utils.c"
+    ],
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/utils/packet_utils.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/utils/packet_utils.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/utils/payload_handler.o",
+      "src/utils/payload_handler.c"
+    ],
+    "directory": "/home/plunyo/Documents/Coding/Social/backend",
+    "file": "/home/plunyo/Documents/Coding/Social/backend/src/utils/payload_handler.c",
+    "output": "/home/plunyo/Documents/Coding/Social/backend/build/utils/payload_handler.o"
   }
 ]

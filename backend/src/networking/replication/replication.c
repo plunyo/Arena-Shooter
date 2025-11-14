@@ -1,26 +1,54 @@
 #include "networking/replication/replication.h"
-#include "networking/replication/properties.h"
 #include <stdlib.h>
+#include <string.h>
 
-Replicable* headReplicable;
-int replicableCount = 0;
+ReplicationContext* ReplicationContext_New(void) {
+    ReplicationContext* ctx = (ReplicationContext*)calloc(1, sizeof(ReplicationContext));
+    if (!ctx) return NULL;
+    ctx->head = NULL;
+    ctx->tail = NULL;
+    ctx->count = 0;
+    ctx->nextId = 0;
+    return ctx;
+}
 
-Replicable* CreateReplicable(ReplicableType type) {
-    Replicable* obj = calloc(1, sizeof(Replicable));
-    obj->type = type;
+void ReplicationContext_Destroy(ReplicationContext* ctx) {
+    if (!ctx) return;
 
-    if (!headReplicable) {
-        headReplicable = obj;
-    } else {
-        Replicable* endReplicable = headReplicable;
-        while (endReplicable->next != NULL) { // go to the last node
-            endReplicable = endReplicable->next;
-        }
-        endReplicable->next = obj; // append the new object
+    /* free all replicables still in context */
+    Replicable* cur = ctx->head;
+    while (cur) {
+        Replicable* next = cur->next;
+        /* free property list (make sure this frees nested allocations) */
+        FreePropertyList(cur->propertyList);
+        free(cur);
+        cur = next;
     }
 
-    obj->id = replicableCount++;
+    free(ctx);
+}
 
+Replicable* Replicable_New(ReplicationContext* ctx, ReplicableType type) {
+    if (!ctx) return NULL;
+
+    Replicable* obj = (Replicable*)calloc(1, sizeof(Replicable));
+    if (!obj) return NULL;
+
+    obj->type = type;
+    obj->id = ctx->nextId++;
+    obj->propertyList = NULL;
+    obj->next = NULL;
+    obj->prev = NULL;
+
+    if (!ctx->head) {
+        ctx->head = ctx->tail = obj;
+    } else {
+        obj->prev = ctx->tail;
+        ctx->tail->next = obj;
+        ctx->tail = obj;
+    }
+
+    ctx->count++;
 
     switch (type) {
         case REPLICABLE_PLAYER:
@@ -30,20 +58,96 @@ Replicable* CreateReplicable(ReplicableType type) {
             break;
 
         case REPLICABLE_ENEMY:
-            AddProperty(obj, PROPERTY_POSITION, CreateVector2Property((Vector2){0, 0}));
+            AddProperty(obj, PROPERTY_POSITION, CreateVector2Property((Vector2){ 0.0f, 0.0f }));
             AddProperty(obj, PROPERTY_HEALTH, CreateIntProperty(100));
+            break;
+
+        default:
             break;
     }
 
     return obj;
 }
 
-void SetReplicableProperty(Replicable* obj, PropertyID id, void* value) {
+/* safe unlink + free */
+void Replicable_Destroy(ReplicationContext* ctx, Replicable* obj) {
+    if (!ctx || !obj) return;
+
+    /* unlink from list */
+    if (obj->prev) {
+        obj->prev->next = obj->next;
+    } else {
+        /* was head */
+        ctx->head = obj->next;
+    }
+
+    if (obj->next) {
+        obj->next->prev = obj->prev;
+    } else {
+        /* was tail */
+        ctx->tail = obj->prev;
+    }
+
+    ctx->count--;
+
+    /* free properties and the object */
+    FreePropertyList(obj->propertyList);
+    free(obj);
+}
+
+/* ----------------------
+   properties
+   ---------------------- */
+
+void Replicable_SetProperty(Replicable* obj, PropertyID id, void* value) {
+    if (!obj) return;
     Property* prop = GetProperty(obj, id);
     if (prop) SetProperty(prop, value);
 }
 
-void DestroyReplicable(Replicable* obj) {
-    FreePropertyList(&obj->propertyList);
-    free(obj);
+Property* Replicable_GetProperty(Replicable* obj, PropertyID id) {
+    if (!obj) return NULL;
+    return GetProperty(obj, id);
+}
+
+/* ----------------------
+   queries
+   ---------------------- */
+
+Replicable* Replicable_GetFirstOfType(ReplicationContext* ctx, int types) {
+    if (!ctx) return NULL;
+    for (Replicable* cur = ctx->head; cur != NULL; cur = cur->next) {
+        if ((cur->type & types) != 0) return cur;
+    }
+    return NULL;
+}
+
+Replicable** Replicable_GetAllOfType(ReplicationContext* ctx, int types, size_t* outCount) {
+    if (!ctx) {
+        if (outCount) *outCount = 0;
+        return NULL;
+    }
+
+    size_t matches = 0;
+    for (Replicable* cur = ctx->head; cur != NULL; cur = cur->next) {
+        if ((cur->type & types) != 0) matches++;
+    }
+
+    if (outCount) *outCount = matches;
+    if (matches == 0) return NULL;
+
+    Replicable** result = (Replicable**)malloc(matches * sizeof(Replicable*));
+    if (!result) {
+        if (outCount) *outCount = 0;
+        return NULL;
+    }
+
+    size_t i = 0;
+    for (Replicable* cur = ctx->head; cur != NULL && i < matches; cur = cur->next) {
+        if ((cur->type & types) != 0) {
+            result[i++] = cur;
+        }
+    }
+
+    return result;
 }

@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// ---------- creation ----------
 Property CreateIntProperty(int value) {
     Property p;
     p.type = PROPERTY_INT;
@@ -28,8 +27,10 @@ Property CreateStringProperty(const char* value) {
 
 Property CreateVector2Property(Vector2 value) {
     Property p;
+
     p.type = PROPERTY_VECTOR2;
     p.value.v2 = value;
+
     return p;
 }
 
@@ -41,7 +42,7 @@ void DestroyProperty(Property* prop) {
 }
 
 void AddProperty(Replicable* obj, PropertyID id, Property prop) {
-    PropertyList* list = &obj->propertyList;
+    PropertyList* list = obj->propertyList;
 
     if (list->count >= list->capacity) {
         list->capacity = list->capacity == 0 ? 4 : list->capacity * 2;
@@ -53,7 +54,7 @@ void AddProperty(Replicable* obj, PropertyID id, Property prop) {
 }
 
 Property* GetProperty(Replicable* obj, PropertyID id) {
-    PropertyList* list = &obj->propertyList;
+    PropertyList* list = obj->propertyList;
 
     for (int i = 0; i < list->count; i++) {
         if (list->properties[i].id == id)
@@ -83,6 +84,8 @@ void* GetPropertyValue(Property* property) {
         case PROPERTY_VECTOR2: return &property->value.v2;
         case PROPERTY_INT: return &property->value.i;
     }
+
+    return NULL;
 }
 
 void FreePropertyList(PropertyList* list) {
