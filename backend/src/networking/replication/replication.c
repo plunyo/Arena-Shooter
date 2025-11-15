@@ -1,4 +1,5 @@
 #include "networking/replication/replication.h"
+#include "networking/replication/properties.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -34,7 +35,7 @@ Replicable* Replicable_New(ReplicationContext* ctx, ReplicableType type) {
 
     obj->type = type;
     obj->id = ctx->nextId++;
-    obj->propertyList = NULL;
+    obj->propertyList = (PropertyList*)calloc(1, sizeof(PropertyList));
     obj->next = NULL;
     obj->prev = NULL;
 
@@ -70,31 +71,23 @@ Replicable* Replicable_New(ReplicationContext* ctx, ReplicableType type) {
 void Replicable_Destroy(ReplicationContext* ctx, Replicable* obj) {
     if (!ctx || !obj) return;
 
-    /* unlink from list */
     if (obj->prev) {
         obj->prev->next = obj->next;
     } else {
-        /* was head */
         ctx->head = obj->next;
     }
 
     if (obj->next) {
         obj->next->prev = obj->prev;
     } else {
-        /* was tail */
         ctx->tail = obj->prev;
     }
 
     ctx->count--;
 
-    /* free properties and the object */
     FreePropertyList(obj->propertyList);
     free(obj);
 }
-
-/* ----------------------
-   properties
-   ---------------------- */
 
 void Replicable_SetProperty(Replicable* obj, PropertyID id, void* value) {
     if (!obj) return;
@@ -106,10 +99,6 @@ Property* Replicable_GetProperty(Replicable* obj, PropertyID id) {
     if (!obj) return NULL;
     return GetProperty(obj, id);
 }
-
-/* ----------------------
-   queries
-   ---------------------- */
 
 Replicable* Replicable_GetFirstOfType(ReplicationContext* ctx, int types) {
     if (!ctx) return NULL;

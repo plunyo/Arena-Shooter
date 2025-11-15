@@ -11,7 +11,7 @@ var move_buffer: StreamPeerBuffer = StreamPeerBuffer.new()
 func _ready() -> void:
 	local_player = ServerConnection.id == id
 	username_label.text = ServerConnection.username
-	ServerConnection.request_player_sync()
+	ServerConnection.request_replicate()
 
 	move_buffer.big_endian = true
 

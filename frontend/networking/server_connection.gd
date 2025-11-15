@@ -76,11 +76,12 @@ func _on_poll_timer_timeout() -> void:
 
 func request_player_replicate() -> void:
 	var payload: StreamPeerBuffer = StreamPeerBuffer.new()
-	payload.put_u8(Replicable.ReplicableType.)
-	send_packet(Packet.new(Packet.Client.REQUEST_REPLICATE, ), ENetPacketPeer.FLAG_RELIABLE)
+	payload.put_u8(Replicable.REPLICABLE_PLAYER)
+	send_packet(Packet.new(Packet.Client.REQUEST_REPLICATE, payload.data_array), ENetPacketPeer.FLAG_RELIABLE)
 
 func _notification(what: int) -> void:
-	if what != NOTIFICATION_WM_CLOSE_REQUEST: return
+	if what != NOTIFICATION_WM_CLOSE_REQUEST:
+		return
 	disconnect_from_server()
 
 func _on_tree_exiting() -> void:

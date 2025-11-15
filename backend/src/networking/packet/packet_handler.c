@@ -32,13 +32,11 @@ void SendPacket(ENetPeer* peer, const GamePacket* packet, enet_uint32 flags) {
 }
 
 static void csJoin(ReplicationContext* ctx, ENetPeer* peer, PayloadHandler* reader) {
-    char* playerName = (char*)reader->data;
+    char* playerName = strdup((char*)reader->data);
     if (!playerName) {
         fprintf(stderr, "failed to read player name from payload\n");
         return;
     }
-
-    // send join accept packet
     uint8_t peerId = (uint8_t)peer->incomingPeerID;
     GamePacket* response = GamePacket_New(SERVER_JOIN_ACCEPT, &peerId, sizeof(peerId));
 
@@ -49,7 +47,6 @@ static void csJoin(ReplicationContext* ctx, ENetPeer* peer, PayloadHandler* read
         fprintf(stderr, "failed to allocate response packet\n");
     }
 
-    // create replicable player in context
     Replicable* newPlayer = Replicable_New(ctx, REPLICABLE_PLAYER);
     if (!newPlayer) {
         fprintf(stderr, "failed to create replicable player\n");
@@ -57,7 +54,7 @@ static void csJoin(ReplicationContext* ctx, ENetPeer* peer, PayloadHandler* read
     }
 
     Replicable_SetProperty(newPlayer, PROPERTY_ID, &peer->incomingPeerID);
-    Replicable_SetProperty(newPlayer, PROPERTY_NAME, strdup(playerName));
+    Replicable_SetProperty(newPlayer, PROPERTY_NAME, playerName);
 
     printf("[join] created player id=%u name=%s\n", peer->incomingPeerID, playerName);
 }

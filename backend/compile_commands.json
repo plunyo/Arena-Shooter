@@ -12,9 +12,9 @@
       "build/networking/packet/game_packet.o",
       "src/networking/packet/game_packet.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/packet/game_packet.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/packet/game_packet.o"
+    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
+    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/networking/packet/game_packet.c",
+    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/networking/packet/game_packet.o"
   },
   {
     "arguments": [
@@ -29,26 +29,9 @@
       "build/networking/packet/packet_handler.o",
       "src/networking/packet/packet_handler.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/packet/packet_handler.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/packet/packet_handler.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-g",
-      "-Wall",
-      "-Werror",
-      "-Isrc",
-      "-DDEBUG=1",
-      "-c",
-      "-o",
-      "build/networking/replication/replication.o",
-      "src/networking/replication/replication.c"
-    ],
-    "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/replication/replication.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/replication/replication.o"
+    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
+    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/networking/packet/packet_handler.c",
+    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/networking/packet/packet_handler.o"
   },
   {
     "arguments": [
@@ -63,9 +46,26 @@
       "build/networking/replication/properties.o",
       "src/networking/replication/properties.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/networking/replication/properties.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/networking/replication/properties.o"
+    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
+    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/networking/replication/properties.c",
+    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/networking/replication/properties.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/networking/replication/replication.o",
+      "src/networking/replication/replication.c"
+    ],
+    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
+    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/networking/replication/replication.c",
+    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/networking/replication/replication.o"
   },
   {
     "arguments": [
@@ -80,26 +80,9 @@
       "build/server.o",
       "src/server.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/server.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/server.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-g",
-      "-Wall",
-      "-Werror",
-      "-Isrc",
-      "-DDEBUG=1",
-      "-c",
-      "-o",
-      "build/utils/vector2.o",
-      "src/utils/vector2.c"
-    ],
-    "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/utils/vector2.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/utils/vector2.o"
+    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
+    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/server.c",
+    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/server.o"
   },
   {
     "arguments": [
@@ -114,9 +97,9 @@
       "build/utils/packet_utils.o",
       "src/utils/packet_utils.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/utils/packet_utils.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/utils/packet_utils.o"
+    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
+    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/utils/packet_utils.c",
+    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/utils/packet_utils.o"
   },
   {
     "arguments": [
@@ -131,8 +114,25 @@
       "build/utils/payload_handler.o",
       "src/utils/payload_handler.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Social/backend",
-    "file": "/home/plunyo/Documents/Coding/Social/backend/src/utils/payload_handler.c",
-    "output": "/home/plunyo/Documents/Coding/Social/backend/build/utils/payload_handler.o"
+    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
+    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/utils/payload_handler.c",
+    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/utils/payload_handler.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/utils/vector2.o",
+      "src/utils/vector2.c"
+    ],
+    "directory": "/home/plunyo/Documents/Coding/Arena-Shooter/backend",
+    "file": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/src/utils/vector2.c",
+    "output": "/home/plunyo/Documents/Coding/Arena-Shooter/backend/build/utils/vector2.o"
   }
 ]
