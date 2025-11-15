@@ -17,11 +17,13 @@ GamePacket* GamePacket_New(PacketType type, const void* data, size_t packetLengt
 
     if (packetLength > 0) {
         instance->data = malloc(packetLength);
+        
         if (!instance->data) {
             fprintf(stderr, "GamePacket_New: data allocation failed\n");
             free(instance);
             return NULL;
         }
+
         memcpy(instance->data, data, packetLength);
     }
 

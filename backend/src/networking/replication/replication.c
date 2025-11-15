@@ -15,11 +15,9 @@ ReplicationContext* ReplicationContext_New(void) {
 void ReplicationContext_Destroy(ReplicationContext* ctx) {
     if (!ctx) return;
 
-    /* free all replicables still in context */
     Replicable* cur = ctx->head;
     while (cur) {
         Replicable* next = cur->next;
-        /* free property list (make sure this frees nested allocations) */
         FreePropertyList(cur->propertyList);
         free(cur);
         cur = next;
@@ -69,7 +67,6 @@ Replicable* Replicable_New(ReplicationContext* ctx, ReplicableType type) {
     return obj;
 }
 
-/* safe unlink + free */
 void Replicable_Destroy(ReplicationContext* ctx, Replicable* obj) {
     if (!ctx || !obj) return;
 

@@ -74,8 +74,10 @@ func _on_poll_timer_timeout() -> void:
 			var packet: PackedByteArray = event_peer.get_packet()
 			parse_packet(packet)
 
-func request_player_sync() -> void:
-	send_packet(Packet.new(Packet.Client.REQUEST_PLAYER_SYNC), ENetPacketPeer.FLAG_RELIABLE)
+func request_player_replicate() -> void:
+	var payload: StreamPeerBuffer = StreamPeerBuffer.new()
+	payload.put_u8(Replicable.ReplicableType.)
+	send_packet(Packet.new(Packet.Client.REQUEST_REPLICATE, ), ENetPacketPeer.FLAG_RELIABLE)
 
 func _notification(what: int) -> void:
 	if what != NOTIFICATION_WM_CLOSE_REQUEST: return
