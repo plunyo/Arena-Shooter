@@ -6,13 +6,13 @@ ifeq ($(DEBUG),1)
     CFLAGS += -DDEBUG=1
 endif
 
-LDFLAGS = -lenet
+LDFLAGS = -lraylib -lm
 
 SRC = $(shell find src -name "*.c")
 OBJ_DIR = build
 OBJ = $(patsubst src/%.c, $(OBJ_DIR)/%.o, $(SRC))
 
-TARGET = server
+TARGET = game
 
 all: $(TARGET)
 

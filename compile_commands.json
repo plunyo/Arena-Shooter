@@ -1,0 +1,19 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/plunyo/Documents/Coding/Conrad-Code/C-ish/C/Raylib Project Template",
+    "file": "/home/plunyo/Documents/Coding/Conrad-Code/C-ish/C/Raylib Project Template/src/main.c",
+    "output": "/home/plunyo/Documents/Coding/Conrad-Code/C-ish/C/Raylib Project Template/build/main.o"
+  }
+]
