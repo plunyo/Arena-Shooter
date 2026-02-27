@@ -12,8 +12,42 @@
       "build/main.o",
       "src/main.c"
     ],
-    "directory": "/home/plunyo/Documents/Coding/Conrad-Code/C-ish/C/Raylib Project Template",
-    "file": "/home/plunyo/Documents/Coding/Conrad-Code/C-ish/C/Raylib Project Template/src/main.c",
-    "output": "/home/plunyo/Documents/Coding/Conrad-Code/C-ish/C/Raylib Project Template/build/main.o"
+    "directory": "/home/plunyo/Coding/Arena-Shooter",
+    "file": "/home/plunyo/Coding/Arena-Shooter/src/main.c",
+    "output": "/home/plunyo/Coding/Arena-Shooter/build/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/server/server.o",
+      "src/server/server.c"
+    ],
+    "directory": "/home/plunyo/Coding/Arena-Shooter",
+    "file": "/home/plunyo/Coding/Arena-Shooter/src/server/server.c",
+    "output": "/home/plunyo/Coding/Arena-Shooter/build/server/server.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/client/client.o",
+      "src/client/client.c"
+    ],
+    "directory": "/home/plunyo/Coding/Arena-Shooter",
+    "file": "/home/plunyo/Coding/Arena-Shooter/src/client/client.c",
+    "output": "/home/plunyo/Coding/Arena-Shooter/build/client/client.o"
   }
 ]

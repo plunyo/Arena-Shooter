@@ -6,7 +6,7 @@ ifeq ($(DEBUG),1)
     CFLAGS += -DDEBUG=1
 endif
 
-LDFLAGS = -lraylib -lm
+LDFLAGS = -lraylib -lm -lenet
 
 SRC = $(shell find src -name "*.c")
 OBJ_DIR = build
