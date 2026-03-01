@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <enet/enet.h>
 
-#define POLL_TIMEOUT 50
+#define POLL_TIMEOUT 10
 
 int RunServer() {
     ENetAddress address;
@@ -30,6 +30,7 @@ int RunServer() {
     }
 
     enet_host_destroy(server);
+    
     return EXIT_SUCCESS;
 } 
 

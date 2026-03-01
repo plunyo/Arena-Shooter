@@ -1,3 +1,3 @@
 #pragma once
 
-int RunClient();
+int RunClient(void);

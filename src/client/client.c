@@ -1,17 +1,21 @@
-#include "client/client.h"
 #include <raylib.h>
 #include <stdlib.h>
+#include "network/network.h"
+#include "render/render.h"
 
-int RunClient() {
-    InitWindow(1920, 1080, "Arena Shooter");
+int RunClient(void) {
+    InitRender();
+
+    ENetHost* host = InitNetwork();
+    ConnectNetwork(host, "127.0.0.1", 1234);
 
     while (!WindowShouldClose()) {
-        BeginDrawing();
-            ClearBackground(BLACK);
-            DrawFPS(10, 10);
-        EndDrawing();
+        UpdateNetwork(host);
+        DrawRender();
     }
 
-    CloseWindow();
+    CloseNetwork(host);
+    CloseRender();
+
     return EXIT_SUCCESS;
 }

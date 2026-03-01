@@ -49,5 +49,39 @@
     "directory": "/home/plunyo/Coding/Arena-Shooter",
     "file": "/home/plunyo/Coding/Arena-Shooter/src/client/client.c",
     "output": "/home/plunyo/Coding/Arena-Shooter/build/client/client.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/client/network/network.o",
+      "src/client/network/network.c"
+    ],
+    "directory": "/home/plunyo/Coding/Arena-Shooter",
+    "file": "/home/plunyo/Coding/Arena-Shooter/src/client/network/network.c",
+    "output": "/home/plunyo/Coding/Arena-Shooter/build/client/network/network.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/client/render/render.o",
+      "src/client/render/render.c"
+    ],
+    "directory": "/home/plunyo/Coding/Arena-Shooter",
+    "file": "/home/plunyo/Coding/Arena-Shooter/src/client/render/render.c",
+    "output": "/home/plunyo/Coding/Arena-Shooter/build/client/render/render.o"
   }
 ]
