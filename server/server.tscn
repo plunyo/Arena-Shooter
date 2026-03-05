@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://3issdt7o6p6b"]
+
+[ext_resource type="Script" uid="uid://dai2j30asjn34" path="res://server/server.gd" id="1_pcfvm"]
+
+[node name="Server" type="Control" unique_id=2122632537]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pcfvm")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="." unique_id=445305929]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offsets = PackedInt32Array(30)
+split_offset = 30
+
+[node name="Console" type="MarginContainer" parent="HSplitContainer" unique_id=1554277602]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/Console" unique_id=2039750561]
+layout_mode = 2
