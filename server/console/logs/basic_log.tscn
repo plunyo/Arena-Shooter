@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cgwqmx6jk817"]
+
+[ext_resource type="PackedScene" uid="uid://bp7cyoldkxx7k" path="res://server/console/logs/console_log.tscn" id="1_3ymup"]
+[ext_resource type="Script" uid="uid://bn6idgy4dykkd" path="res://server/console/logs/basic_log.gd" id="2_lcb7p"]
+
+[node name="BasicLog" unique_id=1675188032 instance=ExtResource("1_3ymup")]
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+script = ExtResource("2_lcb7p")
+
+[node name="MarginContainer" parent="." index="0" unique_id=2075757937]
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="MarginContainer" index="0" unique_id=236965578]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "[00:00:00] "
+vertical_alignment = 1

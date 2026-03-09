@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bp7cyoldkxx7k"]
+
+[ext_resource type="Script" uid="uid://c2enlpfm4qa2m" path="res://server/console/logs/console_log.gd" id="1_mudun"]
+
+[node name="ConsoleLog" type="PanelContainer" unique_id=1097324156]
+script = ExtResource("1_mudun")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2075757937]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10

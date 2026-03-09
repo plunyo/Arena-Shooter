@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://3issdt7o6p6b"]
 
 [ext_resource type="Script" uid="uid://dai2j30asjn34" path="res://server/server.gd" id="1_pcfvm"]
+[ext_resource type="Script" uid="uid://cuftvr1nm0wrw" path="res://server/console/console.gd" id="2_0wvpq"]
+[ext_resource type="PackedScene" uid="uid://cgwqmx6jk817" path="res://server/console/logs/basic_log.tscn" id="3_u3pyk"]
 
-[node name="Server" type="Control" unique_id=2122632537]
+[node name="Server" type="Control" unique_id=2122632537 node_paths=PackedStringArray("console")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,6 +12,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pcfvm")
+console = NodePath("HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer/VBoxContainer/Console")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="." unique_id=445305929]
 layout_mode = 1
@@ -18,15 +21,158 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offsets = PackedInt32Array(30)
-split_offset = 30
 
-[node name="Console" type="MarginContainer" parent="HSplitContainer" unique_id=1554277602]
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer" unique_id=654025852]
+layout_mode = 2
+
+[node name="RunBarMarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer" unique_id=1702545764]
 layout_mode = 2
 theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer" unique_id=697843516]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer" unique_id=1933249354]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer" unique_id=359653185]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=962148751]
+custom_minimum_size = Vector2(300, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Start Server"
+
+[node name="StopButton" type="Button" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=904792393]
+visible = false
+custom_minimum_size = Vector2(300, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Stop Server"
+
+[node name="HSeparator" type="HSeparator" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1081285302]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RunData" type="VBoxContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=20415019]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData" unique_id=239797946]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer" unique_id=1790496731]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PortLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer/MarginContainer" unique_id=741145482]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Port: 7777"
+
+[node name="PanelContainer2" type="PanelContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData" unique_id=1418937464]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer2" unique_id=1292725834]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PlayerCountLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer2/MarginContainer" unique_id=352301243]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Players: 100/100"
+
+[node name="PanelContainer3" type="PanelContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData" unique_id=1016988866]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer3" unique_id=616205195]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ServerTPSLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer3/MarginContainer" unique_id=1439821957]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Tickrate: 60"
+
+[node name="PanelContainer4" type="PanelContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData" unique_id=1728937345]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer4" unique_id=2136522486]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="UptimeLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer4/MarginContainer" unique_id=552367173]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Uptime: 10h 20s"
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer" unique_id=1030213542]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 15
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer/MarginContainer" unique_id=572461476]
+layout_mode = 2
+
+[node name="ConsoleMarginContainer" type="MarginContainer" parent="HSplitContainer" unique_id=1554277602]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/Console" unique_id=2039750561]
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/ConsoleMarginContainer" unique_id=2039750561]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/ConsoleMarginContainer/PanelContainer" unique_id=662355738]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer" unique_id=321744286]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=358918084]
+layout_mode = 2
+
+[node name="ConsoleLabel" type="Label" parent="HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer/VBoxContainer/PanelContainer" unique_id=525238839]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Console"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1196036832]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Console" type="VBoxContainer" parent="HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1627314660]
+layout_mode = 2
+script = ExtResource("2_0wvpq")
+
+[node name="BasicLog" parent="HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer/VBoxContainer/Console" unique_id=1675188032 instance=ExtResource("3_u3pyk")]
 layout_mode = 2

@@ -1,6 +1,10 @@
 extends Control
 class_name Server
 
+enum { EVENT_TYPE, EVENT_PEER, EVENT_DATA, EVENT_CHANNEL }
+
+@export var console: Console
+
 var server: ENetConnection
 
 const PORT := 7777
@@ -9,28 +13,23 @@ const MAX_CLIENTS := 32
 func _ready() -> void:
 	server = ENetConnection.new()
 
-	# create host
 	var err = server.create_host_bound("*", PORT, MAX_CLIENTS)
 	if err != OK:
-		print("server failed")
+		console.log_basic("Server failed.")
 		return
 
-	print("server running on port", PORT)
+	console.log_basic("Server running on port: " + str(PORT))
 
 func _process(_delta: float) -> void:
-	server.service()
+	var event = server.service()
 
-	# process events
-	while server.get_event_count() > 0:
-		var event = server.pop_event()
+	match event[EVENT_TYPE]:
+		ENetConnection.EVENT_CONNECT:
+			console.log_basic("Client Connected!")
 
-		match event.type:
-			ENetConnection.EVENT_CONNECT:
-				print("client connected")
+		ENetConnection.EVENT_DISCONNECT:
+			console.log_basic("Client Disconnected!")
 
-			ENetConnection.EVENT_DISCONNECT:
-				print("client disconnected")
-
-			ENetConnection.EVENT_RECEIVE:
-				var data = event.packet.get_data()
-				print("received:", data.get_string_from_utf8())
+		ENetConnection.EVENT_RECEIVE:
+			var data = event.packet.get_data()
+			console.log_basic("Received: " + data.get_string_from_utf8())

@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://twve5brkf0xx"]
 
+[ext_resource type="Script" uid="uid://cmslmwfmtd6p0" path="res://menus/play_screen/play_screen.gd" id="1_pvhj6"]
+
 [node name="PlayScreen" type="Control" unique_id=910323858]
 layout_mode = 3
 anchors_preset = 15
@@ -7,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_pvhj6")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=597038575]
 layout_mode = 1
@@ -33,7 +36,7 @@ theme_override_constants/separation = 5
 [node name="ClientDescLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=528901328]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "asdasdasdadasdadas"
+text = "Join a game hosted by someone else."
 
 [node name="ClientButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1743081120]
 custom_minimum_size = Vector2(400, 50)
@@ -48,10 +51,13 @@ theme_override_constants/separation = 10
 [node name="ServerDescLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1128325013]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "asdasdasdadasdadas"
+text = "Host a game, others can connect to you."
 
 [node name="ServerButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=674587673]
 custom_minimum_size = Vector2(400, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Server"
+
+[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ClientButton" to="." method="_on_client_button_pressed"]
+[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/ServerButton" to="." method="_on_server_button_pressed"]
