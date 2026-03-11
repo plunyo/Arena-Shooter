@@ -24,6 +24,8 @@ grow_vertical = 2
 
 [node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer" unique_id=654025852]
 layout_mode = 2
+split_offsets = PackedInt32Array(360)
+split_offset = 360
 
 [node name="RunBarMarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer" unique_id=1702545764]
 layout_mode = 2
@@ -125,14 +127,24 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Uptime: 10h 20s"
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer" unique_id=1030213542]
+[node name="PlayerListMarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer" unique_id=1030213542]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 15
 
-[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer/MarginContainer" unique_id=572461476]
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer/PlayerListMarginContainer" unique_id=572461476]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/PlayerListMarginContainer/PanelContainer" unique_id=1136738520]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PlayerList" type="VBoxContainer" parent="HSplitContainer/VSplitContainer/PlayerListMarginContainer/PanelContainer/MarginContainer" unique_id=1144929413]
 layout_mode = 2
 
 [node name="ConsoleMarginContainer" type="MarginContainer" parent="HSplitContainer" unique_id=1554277602]
@@ -176,3 +188,5 @@ script = ExtResource("2_0wvpq")
 
 [node name="BasicLog" parent="HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer/VBoxContainer/Console" unique_id=1675188032 instance=ExtResource("3_u3pyk")]
 layout_mode = 2
+
+[node name="TickTimer" type="Timer" parent="." unique_id=924574085]
