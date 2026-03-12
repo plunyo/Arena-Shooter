@@ -1,10 +1,14 @@
 extends VBoxContainer
 class_name RunInfo
 
+
 @onready var player_count_label: Label = $RunInfoItem/PlayerCountLabel
-@onready var server_tps_label: Label = $RunInfoItem2/ServerTPSLabel
 @onready var uptime_label: Label = $RunInfoItem3/UptimeLabel
 @onready var port_label: Label = $RunInfoItem4/PortLabel
+@onready var tickrate_slider: HSlider = $RunInfoItem3/VBoxContainer/TickrateSlider
+@onready var tickrate_label: Label = $RunInfoItem3/VBoxContainer/TickrateLabel
+
+@export var server: Server
 
 var max_players: int
 
@@ -33,3 +37,8 @@ func format_elapsed_time(total_seconds: int) -> String:
 	if s > 0: parts.append(str(s) + "s")
 
 	return " ".join(parts)
+
+func _on_tickrate_slider_drag_ended(value_changed: bool) -> void:
+	if value_changed:
+		tickrate_label.text = "Ticks Per Second: " + str(tickrate_slider.value)
+		server.set_tickrate(tickrate_slider.value)

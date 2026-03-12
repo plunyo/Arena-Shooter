@@ -6,6 +6,8 @@ enum { EVENT_TYPE, EVENT_PEER, EVENT_DATA, EVENT_CHANNEL }
 const PORT := 7777
 const MAX_CLIENTS := 32
 
+@onready var tick_timer: Timer = $TickTimer
+
 @export var start_button: Button
 @export var stop_button: Button
 @export var run_info: RunInfo
@@ -29,6 +31,8 @@ func start_server() -> void:
 	run_info.init_run_info(PORT, MAX_CLIENTS)
 	console.log_basic("Server running on port: " + str(PORT))
 
+	tick_timer.start()
+
 func stop_server() -> void:
 	if server:
 		start_button.show()
@@ -36,9 +40,14 @@ func stop_server() -> void:
 
 		server.destroy()
 		console.log_basic("Server stopped")
+		tick_timer.stop()
 		server = null
 
+func set_tickrate(new_tickrate: float) -> void:
+	tick_timer.wait_time = 1 / new_tickrate
+
 func _on_tick_timer_timeout() -> void:
+	print("a")
 	run_info.update_run_info(
 		server.get_peers().size(),
 		int((Time.get_ticks_msec() / 1000.0) - start_time)

@@ -68,10 +68,30 @@ text = "Stop Server"
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="RunInfo" type="VBoxContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=20415019]
+[node name="RunInfo" type="VBoxContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=20415019 node_paths=PackedStringArray("server")]
 layout_mode = 2
 theme_override_constants/separation = 10
 script = ExtResource("2_gc6nq")
+server = NodePath("../../../../../../..")
+
+[node name="RunInfoItem3" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo" unique_id=43917306 instance=ExtResource("3_cl8lc")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo/RunInfoItem3" unique_id=26184172]
+layout_mode = 2
+
+[node name="TickrateLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo/RunInfoItem3/VBoxContainer" unique_id=549833422]
+layout_mode = 2
+text = "Ticks Per Second: 50.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TickrateSlider" type="HSlider" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo/RunInfoItem3/VBoxContainer" unique_id=563612448]
+layout_mode = 2
+min_value = 10.0
+max_value = 120.0
+value = 50.0
 
 [node name="RunInfoItem" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo" unique_id=1871271638 instance=ExtResource("3_cl8lc")]
 custom_minimum_size = Vector2(0, 50)
@@ -90,15 +110,6 @@ layout_mode = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Tickrate: 60"
-
-[node name="RunInfoItem3" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo" unique_id=43917306 instance=ExtResource("3_cl8lc")]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="UptimeLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo/RunInfoItem3" unique_id=552367173]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Uptime: 5d 10h 20s"
 
 [node name="RunInfoItem4" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo" unique_id=78325975 instance=ExtResource("3_cl8lc")]
 custom_minimum_size = Vector2(0, 50)
@@ -169,7 +180,9 @@ layout_mode = 2
 script = ExtResource("2_0wvpq")
 
 [node name="TickTimer" type="Timer" parent="." unique_id=924574085]
+wait_time = 0.02
 
 [connection signal="pressed" from="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/StartButton" to="." method="start_server"]
 [connection signal="pressed" from="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/StopButton" to="." method="stop_server"]
+[connection signal="drag_ended" from="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo/RunInfoItem3/VBoxContainer/TickrateSlider" to="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo" method="_on_tickrate_slider_drag_ended"]
 [connection signal="timeout" from="TickTimer" to="." method="_on_tick_timer_timeout"]
