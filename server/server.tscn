@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" uid="uid://dai2j30asjn34" path="res://server/server.gd" id="1_pcfvm"]
 [ext_resource type="Script" uid="uid://cuftvr1nm0wrw" path="res://server/console/console.gd" id="2_0wvpq"]
-[ext_resource type="PackedScene" uid="uid://cgwqmx6jk817" path="res://server/console/logs/basic_log.tscn" id="3_u3pyk"]
+[ext_resource type="Script" uid="uid://bouca2tvmo1lr" path="res://server/run_info/run_info.gd" id="2_gc6nq"]
+[ext_resource type="PackedScene" uid="uid://cnc27pjd28nnr" path="res://server/run_info/run_info_item.tscn" id="3_cl8lc"]
 
-[node name="Server" type="Control" unique_id=2122632537 node_paths=PackedStringArray("console")]
+[node name="Server" type="Control" unique_id=2122632537 node_paths=PackedStringArray("start_button", "stop_button", "run_info", "console")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +13,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pcfvm")
+start_button = NodePath("HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/StartButton")
+stop_button = NodePath("HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/StopButton")
+run_info = NodePath("HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo")
 console = NodePath("HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer/VBoxContainer/Console")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="." unique_id=445305929]
@@ -64,68 +68,46 @@ text = "Stop Server"
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="RunData" type="VBoxContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=20415019]
+[node name="RunInfo" type="VBoxContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=20415019]
+layout_mode = 2
+theme_override_constants/separation = 10
+script = ExtResource("2_gc6nq")
+
+[node name="RunInfoItem" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo" unique_id=1871271638 instance=ExtResource("3_cl8lc")]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData" unique_id=239797946]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer" unique_id=1790496731]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="PortLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer/MarginContainer" unique_id=741145482]
+[node name="PlayerCountLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo/RunInfoItem" unique_id=1651467504]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Port: 7777"
+text = "Players: 67/100"
 
-[node name="PanelContainer2" type="PanelContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData" unique_id=1418937464]
+[node name="RunInfoItem2" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo" unique_id=1262197321 instance=ExtResource("3_cl8lc")]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer2" unique_id=1292725834]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="PlayerCountLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer2/MarginContainer" unique_id=352301243]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Players: 100/100"
-
-[node name="PanelContainer3" type="PanelContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData" unique_id=1016988866]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer3" unique_id=616205195]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="ServerTPSLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer3/MarginContainer" unique_id=1439821957]
+[node name="ServerTPSLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo/RunInfoItem2" unique_id=1439821957]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Tickrate: 60"
 
-[node name="PanelContainer4" type="PanelContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData" unique_id=1728937345]
+[node name="RunInfoItem3" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo" unique_id=43917306 instance=ExtResource("3_cl8lc")]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer4" unique_id=2136522486]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="UptimeLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunData/PanelContainer4/MarginContainer" unique_id=552367173]
+[node name="UptimeLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo/RunInfoItem3" unique_id=552367173]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
-text = "Uptime: 10h 20s"
+text = "Uptime: 5d 10h 20s"
+
+[node name="RunInfoItem4" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo" unique_id=78325975 instance=ExtResource("3_cl8lc")]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PortLabel" type="Label" parent="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/RunInfo/RunInfoItem4" unique_id=1167042239]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Port: 7777"
 
 [node name="PlayerListMarginContainer" type="MarginContainer" parent="HSplitContainer/VSplitContainer" unique_id=1030213542]
 layout_mode = 2
@@ -186,7 +168,8 @@ theme_override_constants/separation = 10
 layout_mode = 2
 script = ExtResource("2_0wvpq")
 
-[node name="BasicLog" parent="HSplitContainer/ConsoleMarginContainer/PanelContainer/MarginContainer/VBoxContainer/Console" unique_id=1675188032 instance=ExtResource("3_u3pyk")]
-layout_mode = 2
-
 [node name="TickTimer" type="Timer" parent="." unique_id=924574085]
+
+[connection signal="pressed" from="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/StartButton" to="." method="start_server"]
+[connection signal="pressed" from="HSplitContainer/VSplitContainer/RunBarMarginContainer/PanelContainer/MarginContainer/VBoxContainer/StopButton" to="." method="stop_server"]
+[connection signal="timeout" from="TickTimer" to="." method="_on_tick_timer_timeout"]
