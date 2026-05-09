@@ -3,10 +3,10 @@ class_name RunInfo
 
 
 @onready var player_count_label: Label = $RunInfoItem/PlayerCountLabel
-@onready var uptime_label: Label = $RunInfoItem3/UptimeLabel
 @onready var port_label: Label = $RunInfoItem4/PortLabel
-@onready var tickrate_slider: HSlider = $RunInfoItem3/VBoxContainer/TickrateSlider
 @onready var tickrate_label: Label = $RunInfoItem3/VBoxContainer/TickrateLabel
+@onready var tickrate_slider: HSlider = $RunInfoItem3/VBoxContainer/MarginContainer/TickrateSlider
+@onready var uptime_label: Label = $RunInfoItem5/UptimeLabel
 
 @export var server: Server
 

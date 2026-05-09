@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://yrjs1r0mtjm"]
+
+[ext_resource type="Script" uid="uid://bpxvqe85msq1m" path="res://menus/join_screen/join_screen.gd" id="1_tf4hr"]
+
+[node name="JoinScreen" type="Control" unique_id=1159054207]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tf4hr")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1652134975]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 235.0
+offset_bottom = 103.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=63854788]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer" unique_id=1386576854]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" unique_id=1417420635]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1311876069]
+layout_mode = 2
+text = "Server Address"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1621164121]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+placeholder_text = "119.18.17.200:7777"
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=850607925]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer" unique_id=2058756509]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer" unique_id=2055414284]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer" unique_id=1677120412]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="ClientDescLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1010094416]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Choose a username for yourself!"
+
+[node name="UsernameLineEdit" type="LineEdit" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=550145242]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+placeholder_text = "Guest-XXX"
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1784824366]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="JoinLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=416776874]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Join the game, and get ready for action!"
+
+[node name="JoinButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=789979598]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Join"
+
+[connection signal="pressed" from="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

@@ -1,8 +1,6 @@
 extends Control
 class_name Server
 
-enum { EVENT_TYPE, EVENT_PEER, EVENT_DATA, EVENT_CHANNEL }
-
 const PORT := 7777
 const MAX_CLIENTS := 32
 
@@ -47,15 +45,16 @@ func set_tickrate(new_tickrate: float) -> void:
 	tick_timer.wait_time = 1 / new_tickrate
 
 func _on_tick_timer_timeout() -> void:
-	print("a")
 	run_info.update_run_info(
 		server.get_peers().size(),
 		int((Time.get_ticks_msec() / 1000.0) - start_time)
 	)
 
 	var event = server.service()
+	var event_type: ENetConnection.EventType = event[0]
+	var event_peer: ENetPacketPeer = event[1]
 
-	match event[EVENT_TYPE]:
+	match event_type:
 		ENetConnection.EVENT_CONNECT:
 			console.log_basic("Client Connected!")
 
@@ -63,5 +62,4 @@ func _on_tick_timer_timeout() -> void:
 			console.log_basic("Client Disconnected!")
 
 		ENetConnection.EVENT_RECEIVE:
-			var data = event.packet.get_data()
-			console.log_basic("Received: " + data.get_string_from_utf8())
+			console.log_basic("Received: " + event_peer.get_packet().get_string_from_utf8() + ", from " + event_peer.get_remote_address())
