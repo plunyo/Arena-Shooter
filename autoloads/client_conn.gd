@@ -1,18 +1,34 @@
 extends Node
 
+enum ConnectionState {
+	DISCONNECTED,
+	CONNECTING,
+	CONNECTED
+}
+
 var connection: ENetConnection = ENetConnection.new()
 var server_peer: ENetPacketPeer
+var state: ConnectionState = ConnectionState.DISCONNECTED
 
 func connect_to_server(ip: String, port: int) -> Error:
+	if state != ConnectionState.DISCONNECTED:
+		return ERR_ALREADY_IN_USE
+
 	var err: Error = connection.create_host()
 	if err != OK:
 		return err
 
 	server_peer = connection.connect_to_host(ip, port)
-	return err
+	if not is_instance_valid(server_peer):
+		state = ConnectionState.DISCONNECTED
+		return ERR_CANT_CONNECT
+
+	state = ConnectionState.CONNECTING
+	return OK
 
 func _process(_delta: float) -> void:
-	if not is_instance_valid(server_peer): return
+	if state == ConnectionState.DISCONNECTED:
+		return
 
 	var event: Array = connection.service()
 	var event_type: ENetConnection.EventType = event[0]
@@ -20,18 +36,23 @@ func _process(_delta: float) -> void:
 
 	match event_type:
 		ENetConnection.EVENT_CONNECT:
-			print("connected")
+			state = ConnectionState.CONNECTED
+			print("CONNECTED TO SERVER!")
 			send_string("hello digga")
 
 		ENetConnection.EVENT_DISCONNECT:
-			print("disconnected")
+			state = ConnectionState.DISCONNECTED
+			server_peer = null
+			print("DISCONNECTED!")
 
 		ENetConnection.EVENT_RECEIVE:
 			var packet := event_peer.get_packet()
-
 			handle_packet(packet)
 
 func send_string(message: String) -> void:
+	if state != ConnectionState.CONNECTED:
+		return
+
 	server_peer.send(0, message.to_utf8_buffer(), ENetPacketPeer.FLAG_RELIABLE)
 
 func handle_packet(packet: PackedByteArray) -> void:
