@@ -4,7 +4,6 @@ class_name Server
 const PORT := 7777
 
 @onready var tick_timer: Timer = $TickTimer
-
 @export var start_button: Button
 @export var stop_button: Button
 @export var run_info: RunInfo
@@ -12,66 +11,146 @@ const PORT := 7777
 
 var start_time: float = 0.0
 
+var _peer_players: Dictionary = {}  # ENetPacketPeer -> PlayerState
+var _next_rep_id:  int        = 0
+
+class PlayerState:
+	var rep_id: int
+	var x:      float = 0.0
+	var y:      float = 0.0
+	var dirty:  bool  = true
+
 func _ready() -> void:
-	if not Networking.peer_connected.is_connected(_on_peer_connected):
-		Networking.peer_connected.connect(_on_peer_connected)
-
-	if not Networking.peer_disconnected.is_connected(_on_peer_disconnected):
-		Networking.peer_disconnected.connect(_on_peer_disconnected)
-
-	if not Networking.packet_received.is_connected(_on_packet_received):
-		Networking.packet_received.connect(_on_packet_received)
+	Networking.peer_connected.connect(_on_peer_connected)
+	Networking.peer_disconnected.connect(_on_peer_disconnected)
+	Networking.packet_received.connect(_on_packet_received)
 
 func start_server() -> void:
-	var err := Networking.host_server(PORT)
+	var err: Error = Networking.host_server(PORT)
 	if err != OK:
-		console.log_basic("server failed!")
+		console.log_basic("Server failed to start!")
 		return
-
 	start_button.hide()
 	stop_button.show()
-
 	start_time = Time.get_ticks_msec() / 1000.0
-
 	run_info.init_run_info(PORT, Networking.MAX_CLIENTS)
-	console.log_basic("server running on port %s!" % PORT)
-
+	console.log_basic("Server running on port %s!" % PORT)
 	tick_timer.start()
 
 func stop_server() -> void:
 	Networking.close_connection()
-
 	start_button.show()
 	stop_button.hide()
-
-	console.log_basic("server stopped!")
+	_peer_players.clear()
+	console.log_basic("Server stopped!")
 	tick_timer.stop()
 
 func set_tickrate(new_tickrate: float) -> void:
 	tick_timer.wait_time = 1.0 / new_tickrate
 
+# ─── Peer Lifecycle ───────────────────────────────────────────────────────────
+
+func _on_peer_connected(peer: ENetPacketPeer) -> void:
+	var player        := PlayerState.new()
+	player.rep_id     = _next_rep_id
+	player.dirty      = true
+	_next_rep_id     += 1
+	_peer_players[peer] = player
+
+	_send_spawn(PacketMgr.EntityType.PLAYER, player.rep_id, peer)
+	_send_world_state_to(peer)
+	console.log_basic("Player %d connected." % player.rep_id)
+
+func _on_peer_disconnected(peer: ENetPacketPeer) -> void:
+	if not _peer_players.has(peer):
+		return
+	var player: PlayerState = _peer_players[peer]
+	_peer_players.erase(peer)
+	_send_despawn(player.rep_id)
+	console.log_basic("Player %d disconnected." % player.rep_id)
+
+# ─── Tick ─────────────────────────────────────────────────────────────────────
+
 func _on_tick_timer_timeout() -> void:
 	run_info.update_run_info(
-		Networking.connection.get_peers().size(),
+		_peer_players.size(),
 		int((Time.get_ticks_msec() / 1000.0) - start_time)
 	)
+	_broadcast_snapshot()
 
-func _on_peer_connected(_peer: ENetPacketPeer) -> void:
-	console.log_basic("client connected!")
+# ─── Snapshot ────────────────────────────────────────────────────────────────
 
-func _on_peer_disconnected(_peer: ENetPacketPeer) -> void:
-	console.log_basic("client disconnected!")
+func _broadcast_snapshot() -> void:
+	var dirty_players: Array = _peer_players.values().filter(
+		func(p: PlayerState) -> bool: return p.dirty
+	)
+	if dirty_players.is_empty():
+		return
 
-func _on_packet_received(_peer: ENetPacketPeer, packet_data: PackedByteArray) -> void:
-	var packet := PacketMgr.read_packet(packet_data)
-	var type := packet.get_u8() as PacketMgr.PacketType
+	var packet := StreamPeerBuffer.new()
+	packet.put_u8(PacketMgr.PacketType.REPLICATE)
+	packet.put_u16(dirty_players.size())
+	for player in dirty_players:
+		packet.put_u16(player.rep_id)
+		packet.put_float(player.x)
+		packet.put_float(player.y)
+		player.dirty = false
 
+	var raw := packet.data_array
+	for peer in _peer_players.keys():
+		Networking.send_packet(peer, Networking.Channel.REPLICATION, raw, ENetPacketPeer.FLAG_UNSEQUENCED)
+
+func _send_world_state_to(new_peer: ENetPacketPeer) -> void:
+	var others: Array = _peer_players.values().filter(
+		func(p: PlayerState) -> bool: return _peer_players.find_key(p) != new_peer
+	)
+	if others.is_empty():
+		return
+
+	var packet := StreamPeerBuffer.new()
+	packet.put_u8(PacketMgr.PacketType.REPLICATE)
+	packet.put_u16(others.size())
+	for player in others:
+		packet.put_u16(player.rep_id)
+		packet.put_float(player.x)
+		packet.put_float(player.y)
+
+	Networking.send_packet(new_peer, Networking.Channel.RELIABLE, packet.data_array)
+
+# ─── Spawn / Despawn ─────────────────────────────────────────────────────────
+
+func _send_spawn(entity_type: PacketMgr.EntityType, rep_id: int, exclude: ENetPacketPeer = null) -> void:
+	var packet := StreamPeerBuffer.new()
+	packet.put_u8(PacketMgr.PacketType.SPAWN)
+	packet.put_u8(entity_type)
+	packet.put_u16(rep_id)
+	var raw := packet.data_array
+	for peer in _peer_players.keys():
+		if peer == exclude:
+			continue
+		Networking.send_packet(peer, Networking.Channel.RELIABLE, raw)
+
+func _send_despawn(rep_id: int) -> void:
+	var packet := StreamPeerBuffer.new()
+	packet.put_u8(PacketMgr.PacketType.DESPAWN)
+	packet.put_u16(rep_id)
+	var raw := packet.data_array
+	for peer in _peer_players.keys():
+		Networking.send_packet(peer, Networking.Channel.RELIABLE, raw)
+
+# ─── Packet Handler ───────────────────────────────────────────────────────────
+
+func _on_packet_received(peer: ENetPacketPeer, packet_data: PackedByteArray) -> void:
+	var packet: StreamPeerBuffer = PacketMgr.read_packet(packet_data)
+	var type: PacketMgr.PacketType = packet.get_u8() as PacketMgr.PacketType
 	match type:
-		PacketMgr.PacketType.MESSAGE:
-			pass
-
 		PacketMgr.PacketType.MOVE:
-			pass
+			_handle_move(peer, packet)
 
-		PacketMgr.PacketType.REPLICATE:
-			pass
+func _handle_move(peer: ENetPacketPeer, packet: StreamPeerBuffer) -> void:
+	if not _peer_players.has(peer):
+		return
+	var player: PlayerState = _peer_players[peer]
+	player.x     = packet.get_float()
+	player.y     = packet.get_float()
+	player.dirty = true

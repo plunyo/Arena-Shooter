@@ -24,6 +24,7 @@ config/icon="res://icon.svg"
 PacketMgr="*uid://bioku6bm2r628"
 Networking="*uid://dmsvqrtrrvdm3"
 ClientConn="*uid://clovjds01iecu"
+ReplicationMgr="*uid://cy7tjt1p26rxd"
 
 [display]
 

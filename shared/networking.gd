@@ -74,12 +74,7 @@ func close_connection() -> void:
 	is_server = false
 	disconnected.emit()
 
-func send_packet(
-	peer: ENetPacketPeer,
-	channel_id: Channel,
-	data: PackedByteArray,
-	flags: int = ENetPacketPeer.FLAG_RELIABLE
-) -> void:
+func send_packet(peer: ENetPacketPeer, channel_id: Channel, data: PackedByteArray, flags: int = ENetPacketPeer.FLAG_RELIABLE) -> void:
 	if not is_instance_valid(peer):
 		return
 

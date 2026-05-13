@@ -1,3 +1,11 @@
 [gd_scene format=3 uid="uid://clovjds01iecu"]
 
+[ext_resource type="Script" uid="uid://b6qeexpx5kt72" path="res://autoloads/client_conn/client_conn.gd" id="1_7rdul"]
+
 [node name="ClientConnection" type="Node" unique_id=66951407]
+script = ExtResource("1_7rdul")
+
+[node name="PingTimer" type="Timer" parent="." unique_id=563787604]
+one_shot = true
+
+[connection signal="timeout" from="PingTimer" to="." method="print_ping"]

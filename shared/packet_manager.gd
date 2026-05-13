@@ -3,9 +3,10 @@ extends Node
 enum PacketType {
 	MESSAGE,
 	MOVE,
-	REPLICATE
+	REPLICATE,
+	SPAWN,
+	DESPAWN
 }
-
 func create_packet(type: PacketType) -> StreamPeerBuffer:
 	var packet := StreamPeerBuffer.new()
 

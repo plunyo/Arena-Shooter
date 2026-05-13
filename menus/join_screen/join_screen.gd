@@ -17,6 +17,6 @@ func _on_join_button_pressed() -> void:
 	var ip: String = split_address[0]
 	var port: int = int(split_address[1])
 
-	var err := Networking.connect_to_server(ip, port)
+	var err: Error = Networking.connect_to_server(ip, port)
 	if err != OK:
 		print("failed to connect: ", err)

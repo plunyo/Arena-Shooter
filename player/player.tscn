@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bb86qjf3aef1k"]
+
+[ext_resource type="Script" uid="uid://c186m0cj0vi0l" path="res://player/player.gd" id="1_rkbax"]
+[ext_resource type="Script" uid="uid://dfdergk5hbuvk" path="res://player/replicable.gd" id="2_g1dw6"]
+
+[node name="Player" type="CharacterBody2D" unique_id=149310151]
+script = ExtResource("1_rkbax")
+
+[node name="Replicable" type="Node" parent="." unique_id=81195612]
+script = ExtResource("2_g1dw6")
+metadata/_custom_type_script = "uid://da0e7uichhaj2"
