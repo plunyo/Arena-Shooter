@@ -1,14 +1,8 @@
 extends Node
 
 enum PacketType {
-	# shared
-	PING,
-
-	# client
 	MESSAGE,
 	MOVE,
-
-	# server
 	REPLICATE
 }
 
@@ -19,10 +13,9 @@ func create_packet(type: PacketType) -> StreamPeerBuffer:
 
 	return packet
 
-func create_ping() -> PackedByteArray:
-	var packet := create_packet(PacketType.PING)
+func read_packet(data: PackedByteArray) -> StreamPeerBuffer:
+	var packet := StreamPeerBuffer.new()
 
-	return packet.data_array
+	packet.data_array = data
 
-func send_packet(peer: ENetPacketPeer, channel: Networking.Channel) -> void:
-	
+	return packet

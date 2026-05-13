@@ -21,9 +21,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-ClientConn="*uid://b6qeexpx5kt72"
 PacketMgr="*uid://bioku6bm2r628"
 Networking="*uid://dmsvqrtrrvdm3"
+ClientConn="*uid://clovjds01iecu"
 
 [display]
 
