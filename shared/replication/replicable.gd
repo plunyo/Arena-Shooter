@@ -4,10 +4,10 @@ extends Node
 var replication_id: int = -1
 var _dirty: bool = true
 
-func serialize_into(buf: StreamPeerBuffer) -> void:
+func serialize_into(_buf: StreamPeerBuffer) -> void:
 	pass
 
-func deserialize_from(buf: StreamPeerBuffer) -> void:
+func deserialize_from(_buf: StreamPeerBuffer) -> void:
 	pass
 
 func mark_dirty() -> void:

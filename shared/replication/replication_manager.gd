@@ -19,14 +19,16 @@ func broadcast_snapshot() -> void:
 	if tracked.is_empty():
 		return
 
-	var dirty_ids:  Array[int]              = []
-	var dirty_data: Array[PackedByteArray]  = []
+	var dirty_ids:  Array[int] = []
+	var dirty_data: Array[PackedByteArray] = []
 
 	for id in tracked:
 		var entity: Replicable = tracked[id]
 		if not entity.consume_dirty():
 			continue
+
 		var ebuf := StreamPeerBuffer.new()
+
 		entity.serialize_into(ebuf)
 		dirty_ids.append(id)
 		dirty_data.append(ebuf.data_array)
@@ -44,20 +46,21 @@ func broadcast_snapshot() -> void:
 		packet.put_u16(dirty_data[i].size())
 		packet.put_data(dirty_data[i])
 
-	var raw := packet.data_array
 	for peer in Networking.connection.get_peers():
 		Networking.send_packet(
 			peer,
 			Networking.Channel.REPLICATION,
-			raw,
+			packet.data_array,
 			ENetPacketPeer.FLAG_UNSEQUENCED
 		)
 
 func apply_snapshot(packet: StreamPeerBuffer) -> void:
-	var count := packet.get_u16()
+	var count: int = packet.get_u16()
+
 	for i in count:
-		var id   := packet.get_u16()
-		var size := packet.get_u16()
+		var id: int = packet.get_u16()
+		var size: int = packet.get_u16()
+
 		if tracked.has(id):
 			tracked[id].deserialize_from(packet)
 		else:
