@@ -3,9 +3,29 @@
 [ext_resource type="Script" uid="uid://c186m0cj0vi0l" path="res://player/player.gd" id="1_rkbax"]
 [ext_resource type="Script" uid="uid://dfdergk5hbuvk" path="res://player/replicable.gd" id="2_g1dw6"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rkbax"]
+size = Vector2(100, 100)
+
 [node name="Player" type="CharacterBody2D" unique_id=149310151]
 script = ExtResource("1_rkbax")
 
 [node name="Replicable" type="Node" parent="." unique_id=81195612]
 script = ExtResource("2_g1dw6")
 metadata/_custom_type_script = "uid://da0e7uichhaj2"
+
+[node name="Collider" type="CollisionShape2D" parent="." unique_id=1473096418]
+shape = SubResource("RectangleShape2D_rkbax")
+
+[node name="Rect" type="ColorRect" parent="." unique_id=561206389]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.2901961, 1, 1)

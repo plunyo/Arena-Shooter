@@ -7,6 +7,7 @@ enum PacketType {
 	SPAWN,
 	DESPAWN
 }
+# make entity type and entity root enums
 func create_packet(type: PacketType) -> StreamPeerBuffer:
 	var packet := StreamPeerBuffer.new()
 

@@ -12,10 +12,10 @@ const PORT := 7777
 var start_time: float = 0.0
 
 var _peer_players: Dictionary = {}  # ENetPacketPeer -> PlayerState
-var _next_rep_id:  int        = 0
+var _next_replication_id:  int        = 0
 
 class PlayerState:
-	var rep_id: int
+	var replication_id: int
 	var x:      float = 0.0
 	var y:      float = 0.0
 	var dirty:  bool  = true
@@ -27,71 +27,84 @@ func _ready() -> void:
 
 func start_server() -> void:
 	var err: Error = Networking.host_server(PORT)
+
 	if err != OK:
 		console.log_basic("Server failed to start!")
 		return
+
 	start_button.hide()
 	stop_button.show()
+
 	start_time = Time.get_ticks_msec() / 1000.0
+
 	run_info.init_run_info(PORT, Networking.MAX_CLIENTS)
+
 	console.log_basic("Server running on port %s!" % PORT)
+
 	tick_timer.start()
 
 func stop_server() -> void:
 	Networking.close_connection()
+
 	start_button.show()
 	stop_button.hide()
+
 	_peer_players.clear()
+
 	console.log_basic("Server stopped!")
+
 	tick_timer.stop()
 
 func set_tickrate(new_tickrate: float) -> void:
 	tick_timer.wait_time = 1.0 / new_tickrate
 
-# ─── Peer Lifecycle ───────────────────────────────────────────────────────────
-
 func _on_peer_connected(peer: ENetPacketPeer) -> void:
-	var player        := PlayerState.new()
-	player.rep_id     = _next_rep_id
-	player.dirty      = true
-	_next_rep_id     += 1
+	var player: PlayerState = PlayerState.new()
+
+	player.replication_id = _next_replication_id
+	player.dirty = true
+	_next_replication_id += 1
 	_peer_players[peer] = player
 
-	_send_spawn(PacketMgr.EntityType.PLAYER, player.rep_id, peer)
+	_send_spawn(PacketMgr.EntityType.PLAYER, player.replication_id, peer)
 	_send_world_state_to(peer)
-	console.log_basic("Player %d connected." % player.rep_id)
+
+	console.log_basic("Player %d connected." % player.replication_id)
 
 func _on_peer_disconnected(peer: ENetPacketPeer) -> void:
 	if not _peer_players.has(peer):
 		return
-	var player: PlayerState = _peer_players[peer]
-	_peer_players.erase(peer)
-	_send_despawn(player.rep_id)
-	console.log_basic("Player %d disconnected." % player.rep_id)
 
-# ─── Tick ─────────────────────────────────────────────────────────────────────
+	var player: PlayerState = _peer_players[peer]
+
+	_peer_players.erase(peer)
+	_send_despawn(player.replication_id)
+
+	console.log_basic("Player %d disconnected." % player.replication_id)
 
 func _on_tick_timer_timeout() -> void:
 	run_info.update_run_info(
 		_peer_players.size(),
 		int((Time.get_ticks_msec() / 1000.0) - start_time)
 	)
-	_broadcast_snapshot()
 
-# ─── Snapshot ────────────────────────────────────────────────────────────────
+	_broadcast_snapshot()
 
 func _broadcast_snapshot() -> void:
 	var dirty_players: Array = _peer_players.values().filter(
 		func(p: PlayerState) -> bool: return p.dirty
 	)
+
 	if dirty_players.is_empty():
 		return
 
 	var packet := StreamPeerBuffer.new()
+
 	packet.put_u8(PacketMgr.PacketType.REPLICATE)
 	packet.put_u16(dirty_players.size())
+
 	for player in dirty_players:
-		packet.put_u16(player.rep_id)
+		packet.put_u16(player.replication_id)
 		packet.put_float(player.x)
 		packet.put_float(player.y)
 		player.dirty = false
@@ -104,36 +117,40 @@ func _send_world_state_to(new_peer: ENetPacketPeer) -> void:
 	var others: Array = _peer_players.values().filter(
 		func(p: PlayerState) -> bool: return _peer_players.find_key(p) != new_peer
 	)
+
 	if others.is_empty():
 		return
 
 	var packet := StreamPeerBuffer.new()
+
 	packet.put_u8(PacketMgr.PacketType.REPLICATE)
 	packet.put_u16(others.size())
+
 	for player in others:
-		packet.put_u16(player.rep_id)
+		packet.put_u16(player.replication_id)
 		packet.put_float(player.x)
 		packet.put_float(player.y)
 
 	Networking.send_packet(new_peer, Networking.Channel.RELIABLE, packet.data_array)
 
-# ─── Spawn / Despawn ─────────────────────────────────────────────────────────
-
-func _send_spawn(entity_type: PacketMgr.EntityType, rep_id: int, exclude: ENetPacketPeer = null) -> void:
+func _send_spawn(entity_type: PacketMgr.EntityType, replication_id: int, exclude: ENetPacketPeer = null) -> void:
 	var packet := StreamPeerBuffer.new()
+
 	packet.put_u8(PacketMgr.PacketType.SPAWN)
 	packet.put_u8(entity_type)
-	packet.put_u16(rep_id)
+	packet.put_u16(replication_id)
+
 	var raw := packet.data_array
 	for peer in _peer_players.keys():
 		if peer == exclude:
 			continue
+
 		Networking.send_packet(peer, Networking.Channel.RELIABLE, raw)
 
-func _send_despawn(rep_id: int) -> void:
+func _send_despawn(replication_id: int) -> void:
 	var packet := StreamPeerBuffer.new()
 	packet.put_u8(PacketMgr.PacketType.DESPAWN)
-	packet.put_u16(rep_id)
+	packet.put_u16(replication_id)
 	var raw := packet.data_array
 	for peer in _peer_players.keys():
 		Networking.send_packet(peer, Networking.Channel.RELIABLE, raw)

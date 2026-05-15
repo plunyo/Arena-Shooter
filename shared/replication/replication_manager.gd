@@ -2,6 +2,8 @@ extends Node
 
 var tracked: Dictionary = {}   # int -> Replicable
 var _next_id: int = 0
+var _tick: int = 0
+
 
 func register(entity: Replicable) -> void:
 	entity.replication_id = _next_id
@@ -15,38 +17,53 @@ func unregister(entity: Replicable) -> void:
 	tracked.erase(entity.replication_id)
 	entity.replication_id = -1
 
+
 func broadcast_snapshot() -> void:
 	if tracked.is_empty():
 		return
 
-	var dirty_ids:  Array[int] = []
-	var dirty_data: Array[PackedByteArray] = []
+	_tick += 1
 
-	for id in tracked:
-		var entity: Replicable = tracked[id]
-		if not entity.consume_dirty():
+	var peers: Array[ENetPacketPeer] = Networking.connection.get_peers()
+
+	for peer in peers:
+		var packet := StreamPeerBuffer.new()
+
+		packet.put_u8(PacketMgr.PacketType.REPLICATE)
+		packet.put_u32(_tick)
+
+		var entity_count_pos := packet.get_position()
+		packet.put_u16(0)
+
+		var entity_count := 0
+
+		for id in tracked:
+			var entity: Replicable = tracked[id]
+
+			if not entity.consume_dirty():
+				continue
+
+			if entity.owner_peer_id == peer:
+				continue
+
+			var ebuf := StreamPeerBuffer.new()
+			entity.serialize_into(ebuf)
+
+			packet.put_u16(id)
+			packet.put_u16(ebuf.data_array.size())
+			packet.put_data(ebuf.data_array)
+
+			entity_count += 1
+
+		if entity_count == 0:
 			continue
 
-		var ebuf := StreamPeerBuffer.new()
+		var end_pos: int = packet.get_position()
 
-		entity.serialize_into(ebuf)
-		dirty_ids.append(id)
-		dirty_data.append(ebuf.data_array)
+		packet.seek(entity_count_pos)
+		packet.put_u16(entity_count)
+		packet.seek(end_pos)
 
-	if dirty_ids.is_empty():
-		return
-
-	var packet := StreamPeerBuffer.new()
-	
-	packet.put_u8(PacketMgr.PacketType.REPLICATE)
-	packet.put_u16(dirty_ids.size())
-
-	for i in dirty_ids.size():
-		packet.put_u16(dirty_ids[i])
-		packet.put_u16(dirty_data[i].size())
-		packet.put_data(dirty_data[i])
-
-	for peer in Networking.connection.get_peers():
 		Networking.send_packet(
 			peer,
 			Networking.Channel.REPLICATION,
@@ -55,6 +72,7 @@ func broadcast_snapshot() -> void:
 		)
 
 func apply_snapshot(packet: StreamPeerBuffer) -> void:
+	var _snapshot_tick: int = packet.get_u32()
 	var count: int = packet.get_u16()
 
 	for i in count:

@@ -2,13 +2,9 @@ extends Node
 
 @onready var ping_timer: Timer = $PingTimer
 
-# Which scene to instantiate per entity type — add new types here as you go
 var entity_scenes: Dictionary = {
 	PacketMgr.EntityType.PLAYER: preload("res://player/player.tscn"),
 }
-
-# Point this at whatever node should parent spawned entities in your scene tree
-@export var world: Node
 
 func _ready() -> void:
 	Networking.connected.connect(_on_connected)
@@ -55,11 +51,11 @@ func _handle_spawn(packet: StreamPeerBuffer) -> void:
 		return
 
 	var entity: Node = entity_scenes[entity_type].instantiate()
-	var root: Node   = world if is_instance_valid(world) else self
+	var root: Node = entity_root[entity_type]
 	root.add_child(entity)
 
 	var replicable: Replicable = entity.get_node("Replicable")
-	replicable.replication_id  = rep_id
+	replicable.replication_id = rep_id
 	ReplicationMgr.tracked[rep_id] = replicable
 
 func _handle_despawn(packet: StreamPeerBuffer) -> void:
