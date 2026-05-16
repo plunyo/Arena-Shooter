@@ -12,13 +12,13 @@ const PORT := 7777
 var start_time: float = 0.0
 
 var _peer_players: Dictionary = {}  # ENetPacketPeer -> PlayerState
-var _next_replication_id:  int        = 0
+var _next_replication_id: int = 0
 
 class PlayerState:
 	var replication_id: int
-	var x:      float = 0.0
-	var y:      float = 0.0
-	var dirty:  bool  = true
+	var x: float = 0.0
+	var y: float = 0.0
+	var dirty: bool  = true
 
 func _ready() -> void:
 	Networking.peer_connected.connect(_on_peer_connected)
@@ -133,33 +133,25 @@ func _send_world_state_to(new_peer: ENetPacketPeer) -> void:
 
 	Networking.send_packet(new_peer, Networking.Channel.RELIABLE, packet.data_array)
 
-func _send_spawn(entity_type: PacketMgr.EntityType, replication_id: int, exclude: ENetPacketPeer = null) -> void:
-	var packet := StreamPeerBuffer.new()
+func _send_spawn(entity_type: ReplicationMgr.EntityType, replication_id: int, exclude: ENetPacketPeer = null) -> void:
+	var packet := PacketMgr.create_spawn_packet(entity_type, replication_id)
 
-	packet.put_u8(PacketMgr.PacketType.SPAWN)
-	packet.put_u8(entity_type)
-	packet.put_u16(replication_id)
-
-	var raw := packet.data_array
 	for peer in _peer_players.keys():
 		if peer == exclude:
 			continue
 
-		Networking.send_packet(peer, Networking.Channel.RELIABLE, raw)
+		Networking.send_packet(peer, Networking.Channel.RELIABLE, packet.data_array)
 
 func _send_despawn(replication_id: int) -> void:
-	var packet := StreamPeerBuffer.new()
-	packet.put_u8(PacketMgr.PacketType.DESPAWN)
-	packet.put_u16(replication_id)
-	var raw := packet.data_array
-	for peer in _peer_players.keys():
-		Networking.send_packet(peer, Networking.Channel.RELIABLE, raw)
+	var packet := PacketMgr.create_despawn(replication_id)
 
-# ─── Packet Handler ───────────────────────────────────────────────────────────
+	for peer in _peer_players.keys():
+		Networking.send_packet(peer, Networking.Channel.RELIABLE, packet.data_array)
 
 func _on_packet_received(peer: ENetPacketPeer, packet_data: PackedByteArray) -> void:
 	var packet: StreamPeerBuffer = PacketMgr.read_packet(packet_data)
 	var type: PacketMgr.PacketType = packet.get_u8() as PacketMgr.PacketType
+
 	match type:
 		PacketMgr.PacketType.MOVE:
 			_handle_move(peer, packet)
@@ -167,6 +159,7 @@ func _on_packet_received(peer: ENetPacketPeer, packet_data: PackedByteArray) -> 
 func _handle_move(peer: ENetPacketPeer, packet: StreamPeerBuffer) -> void:
 	if not _peer_players.has(peer):
 		return
+
 	var player: PlayerState = _peer_players[peer]
 	player.x     = packet.get_float()
 	player.y     = packet.get_float()

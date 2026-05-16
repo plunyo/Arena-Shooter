@@ -1,9 +1,14 @@
 extends Node
 
+enum EntityType {
+	PLAYER
+}
+
+var entity_roots: Dictionary[EntityType, Node] = {}
+
 var tracked: Dictionary = {}   # int -> Replicable
 var _next_id: int = 0
 var _tick: int = 0
-
 
 func register(entity: Replicable) -> void:
 	entity.replication_id = _next_id

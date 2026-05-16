@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://ccjkhq1h1gqo8"]
 
+[ext_resource type="Script" uid="uid://sbtv2ngp7hu" path="res://arena/arena.gd" id="1_dkqtx"]
+
 [node name="Arena" type="Node2D" unique_id=395759725]
+script = ExtResource("1_dkqtx")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=640920524]
 offset_right = 40.0
