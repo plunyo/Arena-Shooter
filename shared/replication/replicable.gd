@@ -1,6 +1,8 @@
 class_name Replicable
 extends Node
 
+var owner_peer_id: int = -1
+
 var replication_id: int = -1
 var _dirty: bool = true
 
@@ -19,3 +21,6 @@ func consume_dirty() -> bool:
 
 	_dirty = false
 	return true
+
+func is_local_owner() -> bool:
+	return owner_peer_id == Networking.local_peer_id

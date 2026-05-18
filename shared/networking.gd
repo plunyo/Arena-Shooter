@@ -26,6 +26,8 @@ var server_peer: ENetPacketPeer = null
 var state := ConnectionState.DISCONNECTED
 var is_server := false
 
+var local_peer_id: int
+
 func _reset_connection() -> void:
 	connection = ENetConnection.new()
 	server_peer = null
@@ -69,9 +71,10 @@ func close_connection() -> void:
 	if state == ConnectionState.DISCONNECTED:
 		return
 
-	_reset_connection()
 	state = ConnectionState.DISCONNECTED
 	is_server = false
+
+	_reset_connection()
 	disconnected.emit()
 
 func send_packet(peer: ENetPacketPeer, channel_id: Channel, data: PackedByteArray, flags: int = ENetPacketPeer.FLAG_RELIABLE) -> void:
@@ -106,6 +109,7 @@ func _process(_delta: float) -> void:
 				else:
 					state = ConnectionState.CONNECTED
 					connected.emit()
+					local_peer_id = event_peer.get_
 
 			ENetConnection.EVENT_DISCONNECT:
 				if is_server:

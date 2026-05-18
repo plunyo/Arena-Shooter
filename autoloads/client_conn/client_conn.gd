@@ -3,7 +3,7 @@ extends Node
 @onready var ping_timer: Timer = $PingTimer
 
 var entity_scenes: Dictionary = {
-	PacketMgr.EntityType.PLAYER: preload("res://player/player.tscn"),
+	ReplicationMgr.EntityType.PLAYER: preload("res://player/player.tscn"),
 }
 
 func _ready() -> void:
@@ -23,12 +23,12 @@ func _on_connected() -> void:
 	ping_timer.start()
 	print("Connected!")
 
+	get_tree().change_scene_to_file("res://arena/arena.tscn")
+
 func _on_disconnected() -> void:
 	ping_timer.stop()
 	ReplicationMgr.clear()
 	print("Disconnected!")
-
-# ─── Packet Handler ───────────────────────────────────────────────────────────
 
 func _on_packet_received(_peer: ENetPacketPeer, packet_data: PackedByteArray) -> void:
 	var packet: StreamPeerBuffer = PacketMgr.read_packet(packet_data)
@@ -43,7 +43,7 @@ func _on_packet_received(_peer: ENetPacketPeer, packet_data: PackedByteArray) ->
 			_handle_despawn(packet)
 
 func _handle_spawn(packet: StreamPeerBuffer) -> void:
-	var entity_type: PacketMgr.EntityType = packet.get_u8() as PacketMgr.EntityType
+	var entity_type: ReplicationMgr.EntityType = packet.get_u8() as ReplicationMgr.EntityType
 	var rep_id: int = packet.get_u16()
 
 	if not entity_scenes.has(entity_type):
@@ -51,7 +51,7 @@ func _handle_spawn(packet: StreamPeerBuffer) -> void:
 		return
 
 	var entity: Node = entity_scenes[entity_type].instantiate()
-	var root: Node = entity_root[entity_type]
+	var root: Node = ReplicationMgr.entity_root[entity_type]
 	root.add_child(entity)
 
 	var replicable: Replicable = entity.get_node("Replicable")

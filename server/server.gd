@@ -66,7 +66,7 @@ func _on_peer_connected(peer: ENetPacketPeer) -> void:
 	_next_replication_id += 1
 	_peer_players[peer] = player
 
-	_send_spawn(PacketMgr.EntityType.PLAYER, player.replication_id, peer)
+	_send_spawn(ReplicationMgr.EntityType.PLAYER, player.replication_id, peer)
 	_send_world_state_to(peer)
 
 	console.log_basic("Player %d connected." % player.replication_id)
